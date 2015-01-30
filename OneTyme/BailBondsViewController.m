@@ -9,6 +9,7 @@
 #import "BailBondsViewController.h"
 
 @interface BailBondsViewController ()
+@property (strong, nonatomic) AppDelegate *appDelegate;
 
 @end
 
@@ -140,6 +141,40 @@
                          (id)[[UIColor darkGrayColor] CGColor],
                          nil];
     return gradientBG;
+}
+
+-(void)didAddBailsBonds:(BailBonds *)bailBonds
+{
+    [_appDelegate.BailBondsDataArray addObject:bailBonds];
+    
+    /* Use NSUserDefaults to access all previously saved tasks. If there were not saved tasks we allocate and initialize the NSMutableArray named taskObjectsAsPropertyLists. */
+    NSMutableArray *bailBondsObjectsAsPropertyLists = [[[NSUserDefaults standardUserDefaults] arrayForKey:BAILBONDS_OBJECTS_KEY] mutableCopy];
+    if (!bailBondsObjectsAsPropertyLists) bailBondsObjectsAsPropertyLists = [[NSMutableArray alloc] init];
+    
+    /* First convert the task object to a property list using the method taskObjectAsAPropertyList. Then add the propertylist (dictionary) to the taskObjectsAsPropertyLists NSMutableArray. Synchronize will save the added array to NSUserDefaults.*/
+    [bailBondsObjectsAsPropertyLists addObject:[self bailBondsObjectsAsAPropertyList:bailBonds]];
+    [[NSUserDefaults standardUserDefaults] setObject:bailBondsObjectsAsPropertyLists forKey:BAILBONDS_OBJECTS_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    //////View Controller for later?
+    /*[self.navigationController popViewControllerAnimated:YES];
+    [self.tableView reloadData];*/
+}
+
+#pragma mark - Helper Methods
+
+/* Convert and return an NSDictionary of the taskObject */
+-(NSDictionary *)bailBondsObjectsAsAPropertyList:(BailBonds *)bailBondsObject
+{
+    NSDictionary *dictionary = @{NAME : bailBondsObject.name, ADDRESS : bailBondsObject.address, CITY : bailBondsObject.city, STATE : bailBondsObject.state, ZIP_CODE : bailBondsObject.zipCode, PHONE_NO : bailBondsObject.phone, SECONDARY_PHONE_NO : bailBondsObject.secondaryPhone, EMAIL : bailBondsObject.email };
+    return dictionary;
+}
+
+
+-(BailBonds *)bailBondsObjectForDictionary:(NSDictionary *)dictionary
+{
+    BailBonds *bailBondsObject = [[BailBonds alloc] initWithBailBonds:dictionary];
+    return bailBondsObject;
 }
 
 @end

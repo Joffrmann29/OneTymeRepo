@@ -20,8 +20,13 @@
 - (void)saveContext;
 - (NSURL *)applicationDocumentsDirectory;
 
+/* ////////////Should it be attorney:istDataArray or is there something dealing with attoneryListData??
+ ///For now, I will create attoneryDataArray
 @property (strong, nonatomic) NSMutableArray *attorneyListData;
-@property (strong, nonatomic) NSMutableArray *BailBondsListData;
+@property (strong, nonatomic) NSMutableArray *BailBondsListData;*/
+
+@property (strong, nonatomic) NSMutableArray *AttorneyDataArray;
+@property (strong, nonatomic) NSMutableArray *BailBondsDataArray;
 
 @property (nonatomic,retain) NSMutableArray *LifeLineDataArray;
 @property (nonatomic,retain) NSMutableDictionary *addLifeLineDict;

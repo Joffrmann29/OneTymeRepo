@@ -115,7 +115,7 @@
 /* Convert and return an NSDictionary of the taskObject */
 -(NSDictionary *)lifelineObjectsAsAPropertyList:(LifeLine *)lifelineObject
 {
-    NSDictionary *dictionary = @{NAME : lifelineObject.name, ADDRESS : lifelineObject.address, CITY : lifelineObject.city, STATE : lifelineObject.state, ZIP_CODE : lifelineObject.zipCode, PHONE_NO : lifelineObject.phone, EMAIL : lifelineObject.email };
+    NSDictionary *dictionary = @{NAME : lifelineObject.name, ADDRESS : lifelineObject.address, CITY : lifelineObject.city, STATE : lifelineObject.state, ZIP_CODE : lifelineObject.zipCode, PHONE_NO : lifelineObject.phone, SECONDARY_PHONE_NO : lifelineObject.secondaryPhone, EMAIL : lifelineObject.email };
     return dictionary;
 }
 
