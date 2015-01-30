@@ -156,7 +156,9 @@
     [[NSUserDefaults standardUserDefaults] setObject:bailBondsObjectsAsPropertyLists forKey:BAILBONDS_OBJECTS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-
+    //////View Controller for later?
+    /*[self.navigationController popViewControllerAnimated:YES];
+    [self.tableView reloadData];*/
 }
 
 #pragma mark - Helper Methods

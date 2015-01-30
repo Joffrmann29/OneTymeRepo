@@ -160,7 +160,9 @@
     [[NSUserDefaults standardUserDefaults] setObject:attorneyObjectsAsPropertyLists forKey:ATTORNEY_OBJECTS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-
+    //////View Controller for later?
+    /*[self.navigationController popViewControllerAnimated:YES];
+     [self.tableView reloadData];*/
 }
 
 #pragma mark - Helper Methods
