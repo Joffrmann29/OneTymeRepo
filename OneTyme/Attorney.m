@@ -10,6 +10,9 @@
 
 @implementation Attorney
 
+<<<<<<< HEAD
+@end
+=======
 /* Designated Initializer */
 -(id)initWithAttorney:(NSDictionary *)attorney
 {
@@ -38,3 +41,4 @@
 }
 
 @end
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
