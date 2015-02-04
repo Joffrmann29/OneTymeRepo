@@ -9,7 +9,9 @@
 #import "BailBondsViewController.h"
 
 @interface BailBondsViewController ()
+
 @property (strong, nonatomic) AppDelegate *appDelegate;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -18,6 +20,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
     
     UIImageView *oneTymeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"AttorneyBackground.png"]];
     oneTymeImage.frame = CGRectMake(0, 64, self.view.frame.size.width, 663);
@@ -156,9 +160,8 @@
     [[NSUserDefaults standardUserDefaults] setObject:bailBondsObjectsAsPropertyLists forKey:BAILBONDS_OBJECTS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    //////View Controller for later?
-    /*[self.navigationController popViewControllerAnimated:YES];
-    [self.tableView reloadData];*/
+   [self.navigationController popViewControllerAnimated:YES];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Helper Methods

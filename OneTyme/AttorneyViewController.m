@@ -15,6 +15,7 @@
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
 
 @property (strong, nonatomic) AppDelegate *appDelegate;
+@property (strong, nonatomic) IBOutlet UITableView *tableView;
 
 @end
 
@@ -160,9 +161,9 @@
     [[NSUserDefaults standardUserDefaults] setObject:attorneyObjectsAsPropertyLists forKey:ATTORNEY_OBJECTS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
-    //////View Controller for later?
-    /*[self.navigationController popViewControllerAnimated:YES];
-     [self.tableView reloadData];*/
+
+    [self.navigationController popViewControllerAnimated:YES];
+    [self.tableView reloadData];
 }
 
 #pragma mark - Helper Methods
