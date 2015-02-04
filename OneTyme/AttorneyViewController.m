@@ -8,10 +8,20 @@
 
 #import "AttorneyViewController.h"
 #import "AppDelegate.h"
+<<<<<<< HEAD
+=======
+#import "Attorney.h"
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 
 @interface AttorneyViewController ()
 
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
+<<<<<<< HEAD
+=======
+
+@property (strong, nonatomic) AppDelegate *appDelegate;
+
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end
 
 @implementation AttorneyViewController
@@ -142,4 +152,41 @@
     return gradientBG;
 }
 
+<<<<<<< HEAD
+=======
+
+-(void)didAddBailsBonds:(Attorney *)attorney
+{
+    [_appDelegate.AttorneyDataArray addObject:attorney];
+    
+    /* Use NSUserDefaults to access all previously saved tasks. If there were not saved tasks we allocate and initialize the NSMutableArray named taskObjectsAsPropertyLists. */
+    NSMutableArray *attorneyObjectsAsPropertyLists = [[[NSUserDefaults standardUserDefaults] arrayForKey:ATTORNEY_OBJECTS_KEY] mutableCopy];
+    if (!attorneyObjectsAsPropertyLists) attorneyObjectsAsPropertyLists = [[NSMutableArray alloc] init];
+    
+    /* First convert the task object to a property list using the method taskObjectAsAPropertyList. Then add the propertylist (dictionary) to the taskObjectsAsPropertyLists NSMutableArray. Synchronize will save the added array to NSUserDefaults.*/
+    [attorneyObjectsAsPropertyLists addObject:[self attorneyObjectsAsAPropertyList:attorney]];
+    [[NSUserDefaults standardUserDefaults] setObject:attorneyObjectsAsPropertyLists forKey:ATTORNEY_OBJECTS_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+
+}
+
+#pragma mark - Helper Methods
+
+/* Convert and return an NSDictionary of the taskObject */
+-(NSDictionary *)attorneyObjectsAsAPropertyList:(Attorney *)attorneyObject
+{
+    NSDictionary *dictionary = @{NAME : attorneyObject.name, ADDRESS : attorneyObject.address, CITY : attorneyObject.city, STATE : attorneyObject.state, ZIP_CODE : attorneyObject.zipCode, PHONE_NO : attorneyObject.phone, SECONDARY_PHONE_NO : attorneyObject.secondaryPhone, EMAIL : attorneyObject.email };
+    return dictionary;
+}
+
+
+-(Attorney *)attorneyObjectForDictionary:(NSDictionary *)dictionary
+{
+    Attorney *attorneyObject = [[Attorney alloc] initWithAttorney:dictionary];
+    return attorneyObject;
+}
+
+
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end

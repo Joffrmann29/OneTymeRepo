@@ -15,7 +15,11 @@
 #define ZIP_CODE @"ZipCode"
 #define EMAIL @"E-mail"
 #define PHONE_NO @"Phone"
+<<<<<<< HEAD
 #define SECONDARYPHONE @"Secondary Phone"
+=======
+#define SECONDARY_PHONE_NO @"SecondaryPhone"
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 
 @interface LifeLine : NSObject
 

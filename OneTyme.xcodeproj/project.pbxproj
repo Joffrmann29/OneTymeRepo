@@ -83,6 +83,10 @@
 		B48E295D1A7AA7FF00399790 /* OneTymeNav.png in Resources */ = {isa = PBXBuildFile; fileRef = B48E295C1A7AA7FF00399790 /* OneTymeNav.png */; };
 		B48E29611A7AAAD500399790 /* BGHomenonRetina.png in Resources */ = {isa = PBXBuildFile; fileRef = B48E29601A7AAAD500399790 /* BGHomenonRetina.png */; };
 		B48E29651A7AADFC00399790 /* rsz_bghomenonretina.png in Resources */ = {isa = PBXBuildFile; fileRef = B48E29641A7AADFC00399790 /* rsz_bghomenonretina.png */; };
+<<<<<<< HEAD
+=======
+		ECB5ECE41A7AD2B70096D4D4 /* BailBonds.m in Sources */ = {isa = PBXBuildFile; fileRef = ECB5ECE31A7AD2B70096D4D4 /* BailBonds.m */; };
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -188,6 +192,11 @@
 		B48E295C1A7AA7FF00399790 /* OneTymeNav.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = OneTymeNav.png; path = ../../OneTymeNav.png; sourceTree = "<group>"; };
 		B48E29601A7AAAD500399790 /* BGHomenonRetina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BGHomenonRetina.png; path = ../../BGHomenonRetina.png; sourceTree = "<group>"; };
 		B48E29641A7AADFC00399790 /* rsz_bghomenonretina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rsz_bghomenonretina.png; path = ../../rsz_bghomenonretina.png; sourceTree = "<group>"; };
+<<<<<<< HEAD
+=======
+		ECB5ECE21A7AD2B70096D4D4 /* BailBonds.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BailBonds.h; sourceTree = "<group>"; };
+		ECB5ECE31A7AD2B70096D4D4 /* BailBonds.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BailBonds.m; sourceTree = "<group>"; };
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -368,6 +377,11 @@
 				B48E29511A7993E100399790 /* LifeLine.m */,
 				B48E29571A7AA40300399790 /* Attorney.h */,
 				B48E29581A7AA40300399790 /* Attorney.m */,
+<<<<<<< HEAD
+=======
+				ECB5ECE21A7AD2B70096D4D4 /* BailBonds.h */,
+				ECB5ECE31A7AD2B70096D4D4 /* BailBonds.m */,
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -537,6 +551,10 @@
 				B48E29481A79862B00399790 /* LifeLineTableViewCell.m in Sources */,
 				B48E29521A7993E100399790 /* LifeLine.m in Sources */,
 				B48E293B1A794E4600399790 /* AttorneyNavigationController.m in Sources */,
+<<<<<<< HEAD
+=======
+				ECB5ECE41A7AD2B70096D4D4 /* BailBonds.m in Sources */,
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 				B452B9241A7844B700D7F684 /* ViewController.m in Sources */,
 				B45873951A78756A00A4E666 /* AttorneyViewController.m in Sources */,
 				B452B91B1A7844B700D7F684 /* main.m in Sources */,

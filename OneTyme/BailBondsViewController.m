@@ -9,6 +9,10 @@
 #import "BailBondsViewController.h"
 
 @interface BailBondsViewController ()
+<<<<<<< HEAD
+=======
+@property (strong, nonatomic) AppDelegate *appDelegate;
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 
 @end
 
@@ -142,4 +146,39 @@
     return gradientBG;
 }
 
+<<<<<<< HEAD
+=======
+-(void)didAddBailsBonds:(BailBonds *)bailBonds
+{
+    [_appDelegate.BailBondsDataArray addObject:bailBonds];
+    
+    /* Use NSUserDefaults to access all previously saved tasks. If there were not saved tasks we allocate and initialize the NSMutableArray named taskObjectsAsPropertyLists. */
+    NSMutableArray *bailBondsObjectsAsPropertyLists = [[[NSUserDefaults standardUserDefaults] arrayForKey:BAILBONDS_OBJECTS_KEY] mutableCopy];
+    if (!bailBondsObjectsAsPropertyLists) bailBondsObjectsAsPropertyLists = [[NSMutableArray alloc] init];
+    
+    /* First convert the task object to a property list using the method taskObjectAsAPropertyList. Then add the propertylist (dictionary) to the taskObjectsAsPropertyLists NSMutableArray. Synchronize will save the added array to NSUserDefaults.*/
+    [bailBondsObjectsAsPropertyLists addObject:[self bailBondsObjectsAsAPropertyList:bailBonds]];
+    [[NSUserDefaults standardUserDefaults] setObject:bailBondsObjectsAsPropertyLists forKey:BAILBONDS_OBJECTS_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+
+}
+
+#pragma mark - Helper Methods
+
+/* Convert and return an NSDictionary of the taskObject */
+-(NSDictionary *)bailBondsObjectsAsAPropertyList:(BailBonds *)bailBondsObject
+{
+    NSDictionary *dictionary = @{NAME : bailBondsObject.name, ADDRESS : bailBondsObject.address, CITY : bailBondsObject.city, STATE : bailBondsObject.state, ZIP_CODE : bailBondsObject.zipCode, PHONE_NO : bailBondsObject.phone, SECONDARY_PHONE_NO : bailBondsObject.secondaryPhone, EMAIL : bailBondsObject.email };
+    return dictionary;
+}
+
+
+-(BailBonds *)bailBondsObjectForDictionary:(NSDictionary *)dictionary
+{
+    BailBonds *bailBondsObject = [[BailBonds alloc] initWithBailBonds:dictionary];
+    return bailBondsObject;
+}
+
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end

@@ -7,7 +7,19 @@
 //
 
 #import <UIKit/UIKit.h>
+<<<<<<< HEAD
 
 @interface BailBondsViewController : UIViewController
 
+=======
+#import "AppDelegate.h"
+#import "BailBonds.h"
+
+#define BAILBONDS_OBJECTS_KEY @"BailBonds Objects Key"
+
+
+@interface BailBondsViewController : UIViewController
+
+
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end

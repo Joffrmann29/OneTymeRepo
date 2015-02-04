@@ -24,8 +24,12 @@
         self.state = lifeline[STATE];
         self.zipCode = lifeline[ZIP_CODE];
         self.phone = lifeline[PHONE_NO];
+<<<<<<< HEAD
         self.secondaryPhone = lifeline[SECONDARYPHONE];
         self.email = lifeline[EMAIL];
+=======
+        self.phone = lifeline[SECONDARY_PHONE_NO];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     }
     
     return self;

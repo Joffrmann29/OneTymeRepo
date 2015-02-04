@@ -20,7 +20,10 @@
 @property (nonatomic, strong) UITextField *stateField;
 @property (nonatomic, strong) UITextField *zipField;
 @property (nonatomic, strong) UITextField *phoneField;
+<<<<<<< HEAD
 @property (nonatomic, strong) UITextField *secondaryPhoneField;
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @property (nonatomic, strong) UITextField *emailField;
 
 @end
@@ -37,6 +40,7 @@
     
     UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [saveButton setTitle:@"Save Lifeline" forState:UIControlStateNormal];
+<<<<<<< HEAD
     if(_isEdit == NO){
     [saveButton addTarget:self
                                 action:@selector(saveLifeLine)
@@ -48,6 +52,11 @@
                        action:@selector(updateLifeline)
              forControlEvents:UIControlEventTouchUpInside];
     }
+=======
+    [saveButton addTarget:self
+                                action:@selector(saveLifeLine)
+                      forControlEvents:UIControlEventTouchUpInside];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     saveButton.frame = CGRectMake(120.5, 621, 173, 29);
     CALayer *saveLayer = saveButton.layer;
     saveLayer = [self gradientBGLayerForBounds:saveButton.bounds];
@@ -77,37 +86,58 @@
     self.nameField.textColor = textfieldPlaceholderColor;
     self.nameField.placeholder = @"Name";
     
+<<<<<<< HEAD
     self.addressField = [[UITextField alloc]initWithFrame:CGRectMake(57, 188, 300, 30)];
+=======
+    self.addressField = [[UITextField alloc]initWithFrame:CGRectMake(57, 193, 300, 30)];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.addressField.layer.cornerRadius = 10;
     self.addressField.backgroundColor = [UIColor blackColor];
     self.addressField.textColor = textfieldPlaceholderColor;
     self.addressField.placeholder = @"Address";
     
+<<<<<<< HEAD
     self.cityField = [[UITextField alloc]initWithFrame:CGRectMake(57, 248, 300, 30)];
+=======
+    self.cityField = [[UITextField alloc]initWithFrame:CGRectMake(57, 258, 300, 30)];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.cityField.layer.cornerRadius = 10;
     self.cityField.backgroundColor = [UIColor blackColor];
     self.cityField.textColor = textfieldPlaceholderColor;
     self.cityField.placeholder = @"City";
     
+<<<<<<< HEAD
     self.stateField = [[UITextField alloc]initWithFrame:CGRectMake(57, 308, 300, 30)];
+=======
+    self.stateField = [[UITextField alloc]initWithFrame:CGRectMake(57, 323, 300, 30)];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.stateField.layer.cornerRadius = 10;
     self.stateField.backgroundColor = [UIColor blackColor];
     self.stateField.textColor = textfieldPlaceholderColor;
     self.stateField.placeholder = @"State";
     
+<<<<<<< HEAD
     self.zipField = [[UITextField alloc]initWithFrame:CGRectMake(57, 368, 300, 30)];
+=======
+    self.zipField = [[UITextField alloc]initWithFrame:CGRectMake(57, 398, 300, 30)];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.zipField.layer.cornerRadius = 10;
     self.zipField.backgroundColor = [UIColor blackColor];
     self.zipField.textColor = textfieldPlaceholderColor;
     self.zipField.placeholder = @"Zip Code";
     
+<<<<<<< HEAD
     self.phoneField = [[UITextField alloc]initWithFrame:CGRectMake(57, 428, 300, 30)];
+=======
+    self.phoneField = [[UITextField alloc]initWithFrame:CGRectMake(57, 463, 300, 30)];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.phoneField.layer.cornerRadius = 10;
     self.phoneField.backgroundColor = [UIColor blackColor];
     self.phoneField.textColor = textfieldPlaceholderColor;
     self.phoneField.keyboardType = UIKeyboardTypeNamePhonePad;
     self.phoneField.placeholder = @"Phone";
     
+<<<<<<< HEAD
     self.secondaryPhoneField = [[UITextField alloc]initWithFrame:CGRectMake(57, 488, 300, 30)];
     self.secondaryPhoneField.layer.cornerRadius = 10;
     self.secondaryPhoneField.backgroundColor = [UIColor blackColor];
@@ -116,6 +146,9 @@
     self.secondaryPhoneField.placeholder = @"Secondary Phone";
     
     self.emailField = [[UITextField alloc]initWithFrame:CGRectMake(57, 548, 300, 30)];
+=======
+    self.emailField = [[UITextField alloc]initWithFrame:CGRectMake(57, 528, 300, 30)];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.emailField.layer.cornerRadius = 10;
     self.emailField.backgroundColor = [UIColor blackColor];
     self.emailField.textColor = textfieldPlaceholderColor;
@@ -128,7 +161,10 @@
     [self.stateField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
     [self.zipField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
     [self.phoneField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
+<<<<<<< HEAD
     [self.secondaryPhoneField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     [self.emailField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
     
     self.nameField.textAlignment = NSTextAlignmentCenter;
@@ -137,7 +173,10 @@
     self.stateField.textAlignment = NSTextAlignmentCenter;
     self.zipField.textAlignment = NSTextAlignmentCenter;
     self.phoneField.textAlignment = NSTextAlignmentCenter;
+<<<<<<< HEAD
     self.secondaryPhoneField.textAlignment = NSTextAlignmentCenter;
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.emailField.textAlignment = NSTextAlignmentCenter;
     
     self.nameField.delegate = self;
@@ -146,7 +185,10 @@
     self.stateField.delegate = self;
     self.zipField.delegate = self;
     self.phoneField.delegate = self;
+<<<<<<< HEAD
     self.secondaryPhoneField.delegate = self;
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     self.emailField.delegate = self;
     
     [self.view addSubview:self.nameField];
@@ -155,6 +197,7 @@
     [self.view addSubview:self.stateField];
     [self.view addSubview:self.zipField];
     [self.view addSubview:self.phoneField];
+<<<<<<< HEAD
     [self.view addSubview:self.secondaryPhoneField];
     [self.view addSubview:self.emailField];
     
@@ -168,6 +211,9 @@
         self.phoneField.text = self.lifeline.phone;
         self.emailField.text = self.lifeline.email;
     }
+=======
+    [self.view addSubview:self.emailField];
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
@@ -256,6 +302,7 @@
     [alert show];
 }
 
+<<<<<<< HEAD
 -(void)updateLifeline
 {
     self.lifeline.name = self.nameField.text;
@@ -271,6 +318,8 @@
     [self.delegate didUpdateLifeline:self.lifeline];
 }
 
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 -(LifeLine *)returnNewLifeline
 {
     LifeLine *lifelineObject = [[LifeLine alloc] init];
@@ -280,7 +329,10 @@
     lifelineObject.state = self.stateField.text;
     lifelineObject.zipCode = self.zipField.text;
     lifelineObject.phone = self.phoneField.text;
+<<<<<<< HEAD
     lifelineObject.secondaryPhone = self.secondaryPhoneField.text;
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     lifelineObject.email = self.emailField.text;
     
     return lifelineObject;

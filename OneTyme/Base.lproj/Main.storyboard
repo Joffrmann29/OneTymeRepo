@@ -74,10 +74,17 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Ff6-Y1-l1F">
+<<<<<<< HEAD
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="700"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="blue" accessoryType="detailDisclosureButton" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LifeLineTableViewCell" id="Ceo-L0-1uk" customClass="LifeLineTableViewCell">
+=======
+                                <rect key="frame" x="0.0" y="0.0" width="600" height="700"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="LifeLineTableViewCell" rowHeight="150" id="Ceo-L0-1uk" customClass="LifeLineTableViewCell">
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ceo-L0-1uk" id="hxg-dK-QoM">
                                             <autoresizingMask key="autoresizingMask"/>
@@ -117,13 +124,20 @@
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="lOl-LR-S79">
                             <connections>
                                 <action selector="addLifeline:" destination="YDd-C8-aHY" id="8yE-qb-9iC"/>
+<<<<<<< HEAD
                                 <segue destination="n9l-H7-6ho" kind="push" identifier="" id="ZOf-kM-eZf"/>
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
                             </connections>
                         </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="Ff6-Y1-l1F" id="QcH-0p-tRh"/>
+<<<<<<< HEAD
                         <segue destination="n9l-H7-6ho" kind="push" identifier="toEditLifeline" id="Wix-9g-hNz"/>
+=======
+                        <segue destination="n9l-H7-6ho" kind="push" identifier="toAddLifeline" id="N9k-ra-Oip"/>
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aho-cG-va8" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -244,7 +258,10 @@
         <image name="home.png" width="30" height="30"/>
         <image name="homeSelected.png" width="30" height="30"/>
     </resources>
+<<<<<<< HEAD
     <inferredMetricsTieBreakers>
         <segue reference="ZOf-kM-eZf"/>
     </inferredMetricsTieBreakers>
+=======
+>>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 </document>
