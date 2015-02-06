@@ -10,19 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OneTyme/LifelineAddViewController.m"
-<<<<<<< HEAD
-            timestampString = "444342632.950466"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "390"
-            endingLineNumber = "390"
-=======
             timestampString = "444242074.911489"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "344"
             endingLineNumber = "344"
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
             landmarkName = "-peoplePickerNavigationControllerDidCancel:"
             landmarkType = "5">
          </BreakpointContent>
@@ -34,41 +26,14 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "OneTyme/LifelineAddViewController.m"
-<<<<<<< HEAD
-            timestampString = "444342632.950466"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "384"
-            endingLineNumber = "384"
-=======
             timestampString = "444242074.911489"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "338"
             endingLineNumber = "338"
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
             landmarkName = "-peoplePickerNavigationController:shouldContinueAfterSelectingPerson:property:identifier:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
-<<<<<<< HEAD
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "OneTyme/LifeLineViewController.m"
-            timestampString = "444342305.173604"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "210"
-            endingLineNumber = "210"
-            landmarkName = "-addLifeline:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-=======
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
    </Breakpoints>
 </Bucket>

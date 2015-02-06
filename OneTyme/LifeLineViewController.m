@@ -12,18 +12,10 @@
 #import "LifeLine.h"
 #import "LifelineAddViewController.h"
 
-<<<<<<< HEAD
-@interface LifeLineViewController ()<LifelineAddViewControllerDelegate>
-
-@property (strong, nonatomic) AppDelegate *appDelegate;
-@property (nonatomic) BOOL editingMode;
-
-=======
 @interface LifeLineViewController ()<UITableViewDelegate,UITableViewDataSource,LifelineAddViewControllerDelegate>
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) AppDelegate *appDelegate;
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end
 
 @implementation LifeLineViewController
@@ -34,11 +26,6 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-<<<<<<< HEAD
-    self.editingMode = NO;
-    
-=======
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     _appDelegate = (AppDelegate *)[[UIApplication sharedApplication]delegate];
     
     /* Access NSUserDefaults for the array containing the task's saved as NSDictionary objects. */
@@ -98,57 +85,13 @@
     cell.addressLabel.text = lifeline.address;
     cell.zipLabel.text = [NSString stringWithFormat:@"%@, %@ %@", lifeline.city, lifeline.state, lifeline.zipCode];
     
-<<<<<<< HEAD
-    cell.nameLabel.font = [UIFont fontWithName:@"Times New Roman" size:17];
-    cell.addressLabel.font = [UIFont fontWithName:@"Times New Roman" size:17];
-    cell.zipLabel.font = [UIFont fontWithName:@"Times New Roman" size:17];
-    
     return cell;
 }
 
-/* Allow the user to edit tableViewCells for deletion */
--(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return YES;
-}
-
-/* Method called when the users swipes and presses the delete key */
--(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (editingStyle == UITableViewCellEditingStyleDelete){
-        [_appDelegate.LifeLineDataArray removeObjectAtIndex:indexPath.row];
-    }
-    /* With the updated array of task objects iterate over them and convert them to plists. Save the plists in the newTaskObjectsData NSMutableArray. Save this array to NSUserDefaults. */
-    NSMutableArray *newLifelineObjectsData = [[NSMutableArray alloc] init];
-    
-    for (LifeLine *lifeline in _appDelegate.LifeLineDataArray){
-        [newLifelineObjectsData addObject:[self lifelineObjectsAsAPropertyList:lifeline]];
-    }
-    
-    [[NSUserDefaults standardUserDefaults] setObject:newLifelineObjectsData forKey:LIFELINE_OBJECTS_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-    
-    /* Animate the deletion of the cell */
-    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-}
-
-=======
-    return cell;
-}
-
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 150;
 }
 
-<<<<<<< HEAD
--(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
-{
-    [self performSegueWithIdentifier:@"toEditLifeline" sender:indexPath];
-}
-
-=======
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 -(void)didAddLifeline:(LifeLine *)lifeline
 {
     [_appDelegate.LifeLineDataArray addObject:lifeline];
@@ -167,39 +110,12 @@
     [self.tableView reloadData];
 }
 
-<<<<<<< HEAD
-
--(void)didUpdateLifeline:(LifeLine *)lifeline
-{
-    [self.tableView reloadData];
-    [self saveLifelines];
-}
-
--(void)saveLifelines
-{
-    /* Create a NSMutableArray that we will NSDictionaries returned from the method taskObjectAsAPropertyList. */
-    NSMutableArray *lifelineObjectsAsPropertyLists = [[NSMutableArray alloc] init];
-    for (int x = 0; x < [_appDelegate.LifeLineDataArray count]; x ++){
-                [lifelineObjectsAsPropertyLists addObject:[self lifelineObjectsAsAPropertyList:_appDelegate.LifeLineDataArray[x]]];
-    }
-    
-    /* Save the updated array to NSUserDefaults. */
-    [[NSUserDefaults standardUserDefaults] setObject:lifelineObjectsAsPropertyLists forKey:LIFELINE_OBJECTS_KEY];
-    [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-=======
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 #pragma mark - Helper Methods
 
 /* Convert and return an NSDictionary of the taskObject */
 -(NSDictionary *)lifelineObjectsAsAPropertyList:(LifeLine *)lifelineObject
 {
-<<<<<<< HEAD
-    NSDictionary *dictionary = @{NAME : lifelineObject.name, ADDRESS : lifelineObject.address, CITY : lifelineObject.city, STATE : lifelineObject.state, ZIP_CODE : lifelineObject.zipCode, PHONE_NO : lifelineObject.phone, EMAIL : lifelineObject.email };
-=======
     NSDictionary *dictionary = @{NAME : lifelineObject.name, ADDRESS : lifelineObject.address, CITY : lifelineObject.city, STATE : lifelineObject.state, ZIP_CODE : lifelineObject.zipCode, PHONE_NO : lifelineObject.phone, SECONDARY_PHONE_NO : lifelineObject.secondaryPhone, EMAIL : lifelineObject.email };
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     return dictionary;
 }
 
@@ -220,29 +136,13 @@
     LifeLine *lifelineObject = [[LifeLine alloc]init];
     /* Before transitioning to the CCAddTaskViewController set the delegate property to self. This way the CCAddTaskViewController will be able to call methods in the ViewController file. */
     if ([segue.destinationViewController isKindOfClass:[LifelineAddViewController class]]){
-<<<<<<< HEAD
-        if([[segue identifier] isEqualToString:@"toEditLifeline"]){
-        LifelineAddViewController *addViewController = segue.destinationViewController;
-        NSIndexPath *path = sender;
-        lifelineObject = _appDelegate.LifeLineDataArray[path.row];
-        addViewController.delegate = self;
-        _editingMode = YES;
-        addViewController.isEdit = _editingMode;
-        addViewController.lifeline = lifelineObject;
-        }
-=======
         LifelineAddViewController *addViewController = segue.destinationViewController;
         addViewController.delegate = self;
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
     }
 }
 
 
 - (IBAction)addLifeline:(id)sender {
-<<<<<<< HEAD
-//    [self performSegueWithIdentifier:@"toAddLifeline" sender:self];
-=======
     [self performSegueWithIdentifier:@"toAddLifeline" sender:self];
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 }
 @end

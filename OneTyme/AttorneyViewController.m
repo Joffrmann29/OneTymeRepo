@@ -8,21 +8,15 @@
 
 #import "AttorneyViewController.h"
 #import "AppDelegate.h"
-<<<<<<< HEAD
-=======
 #import "Attorney.h"
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 
 @interface AttorneyViewController ()
 
 @property (strong, nonatomic) IBOutlet UINavigationBar *navBar;
-<<<<<<< HEAD
-=======
 
 @property (strong, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end
 
 @implementation AttorneyViewController
@@ -153,8 +147,6 @@
     return gradientBG;
 }
 
-<<<<<<< HEAD
-=======
 
 -(void)didAddBailsBonds:(Attorney *)attorney
 {
@@ -191,5 +183,4 @@
 }
 
 
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end

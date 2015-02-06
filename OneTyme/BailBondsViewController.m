@@ -9,12 +9,9 @@
 #import "BailBondsViewController.h"
 
 @interface BailBondsViewController ()
-<<<<<<< HEAD
 
 @property (strong, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
-=======
-<<<<<<< HEAD
 
 @end
 
@@ -150,7 +147,6 @@
     return gradientBG;
 }
 
-<<<<<<< HEAD
 -(void)didAddBailsBonds:(BailBonds *)bailBonds
 {
     [_appDelegate.BailBondsDataArray addObject:bailBonds];
@@ -184,5 +180,4 @@
     return bailBondsObject;
 }
 
->>>>>>> dda2f1131eee80af04ea4b45c5588cb850f4a8ea
 @end
