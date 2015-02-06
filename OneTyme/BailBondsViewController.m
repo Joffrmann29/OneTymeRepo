@@ -8,7 +8,10 @@
 
 #import "BailBondsViewController.h"
 
-@interface BailBondsViewController ()
+@interface BailBondsViewController (){
+    UIView *bbds;
+    UIView *search;
+}
 
 @property (strong, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -179,5 +182,83 @@
     BailBonds *bailBondsObject = [[BailBonds alloc] initWithBailBonds:dictionary];
     return bailBondsObject;
 }
+
+-(void) addBailBondDetailSubview{
+    
+    bbds = [[UIView alloc] initWithFrame:CGRectMake(75, 50, 184, 220)];
+    
+    bbds.backgroundColor = [UIColor blackColor];
+    
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(6, 7, 140, 25)];
+    lblTitle.text = @"Bail Bonds Details";
+    [bbds addSubview:lblTitle];
+    
+    UITextField *txtFullName = [[UITextField alloc] initWithFrame:CGRectMake(10, 36, 174, 30)];
+    txtFullName.placeholder = @"Full Name";
+    [bbds addSubview:txtFullName];
+    
+    UITextField *txtAddress = [[UITextField alloc] initWithFrame:CGRectMake(10, 73, 174, 30)];
+    txtFullName.placeholder = @"Address";
+    [bbds addSubview:txtAddress];
+    
+    UITextField *txtPhone = [[UITextField alloc] initWithFrame:CGRectMake(10, 109, 174, 30)];
+    txtFullName.placeholder = @"Mobile/Landline";
+    [bbds addSubview:txtPhone];
+    
+    UITextField *txtEmail = [[UITextField alloc] initWithFrame:CGRectMake(10, 145, 174, 30)];
+    txtFullName.placeholder = @"Email";
+    [bbds addSubview:txtEmail];
+    
+    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(6, 182, 82, 30)];
+    [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
+    [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [bbds addSubview:btnLeft];
+    
+    UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(6, 182, 82, 30)];
+    [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
+    [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [bbds addSubview:btnRight];
+    
+    [self.view addSubview:bbds];
+    
+}
+
+//-(void)addSearch
+//{
+//    [self addSearchView:<#(NSString *)#>]
+//}
+
+-(void)addSearchView:(NSString *)searchType{
+    
+    search = [[UIView alloc] initWithFrame:CGRectMake(68, 122, 184, 120)];
+    
+    search.backgroundColor = [UIColor blackColor];
+    
+    UILabel *lblTitle = [[UILabel alloc] initWithFrame:CGRectMake(9, 10, 138, 21)];
+    lblTitle.text = searchType;
+    [search addSubview:lblTitle];
+    
+    UITextField *txtSearch = [[UITextField alloc] initWithFrame:CGRectMake(5, 39, 138, 21)];
+    //txtSearch.placeholder = @"Type search here";
+    [bbds addSubview:txtSearch];
+    
+    UIButton *btnLeft = [[UIButton alloc] initWithFrame:CGRectMake(7, 77, 82, 30)];
+    [btnLeft setTitle:@"Submit" forState:UIControlStateNormal];
+    [btnLeft addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [bbds addSubview:btnLeft];
+    
+    UIButton *btnRight = [[UIButton alloc] initWithFrame:CGRectMake(95, 77, 82, 30)];
+    [btnLeft setTitle:@"Cancel" forState:UIControlStateNormal];
+    [btnRight addTarget:self action:@selector(dismissView) forControlEvents:UIControlEventTouchUpInside];
+    [bbds addSubview:btnRight];
+    
+    [self.view addSubview:search];
+}
+
+-(void)dismissView
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
+}
+
 
 @end
