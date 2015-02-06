@@ -36,6 +36,7 @@
     CALayer *locationLayer = locationButton.layer;
     locationLayer = [self gradientBGLayerForBounds:locationButton.bounds];
     locationLayer.cornerRadius = 10;
+    //[locationButton addTarget:self action:@selector(ad) forControlEvents:<#(UIControlEvents)#>]
     [self.view addSubview:locationButton];
     
     UIGraphicsBeginImageContext(locationLayer.bounds.size);
@@ -59,6 +60,7 @@
     CALayer *zipLayer = zipButton.layer;
     zipLayer = [self gradientBGLayerForBounds:zipButton.bounds];
     zipLayer.cornerRadius = 10;
+    [zipButton addTarget:self action:@selector(addSearchZip) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:zipButton];
     
     UIGraphicsBeginImageContext(zipLayer.bounds.size);
@@ -82,6 +84,8 @@
     CALayer *nameLayer = nameButton.layer;
     nameLayer = [self gradientBGLayerForBounds:nameButton.bounds];
     nameLayer.cornerRadius = 10;
+    [nameButton addTarget:self action:@selector(addSearchName) forControlEvents:UIControlEventTouchUpInside];
+
     [self.view addSubview:nameButton];
     
     UIGraphicsBeginImageContext(nameLayer.bounds.size);
@@ -223,10 +227,15 @@
     
 }
 
-//-(void)addSearch
-//{
-//    [self addSearchView:<#(NSString *)#>]
-//}
+-(void)addSearchName{
+
+    [self addSearchView:@"Name"];
+}
+
+-(void)addSearchZip{
+    
+    [self addSearchView:@"Zip"];
+}
 
 -(void)addSearchView:(NSString *)searchType{
     
