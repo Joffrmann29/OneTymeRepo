@@ -10,14 +10,16 @@
 #import "LifeLine.h"
 #import <AddressBook/AddressBook.h>
 #import <AddressBookUI/AddressBookUI.h>
+#import "LifeLineViewController.h"
 
 @protocol LifelineAddViewControllerDelegate <NSObject>
 
 -(void)didAddLifeline:(LifeLine *)lifeline;
+-(void)saveLifeline:(LifeLine *)lifeline;
 
 @end
 
-@interface LifelineAddViewController : UIViewController<ABPeoplePickerNavigationControllerDelegate>
+@interface LifelineAddViewController : UIViewController<ABPeoplePickerNavigationControllerDelegate,LifeLineViewControllerDelegate>
 
 -(IBAction)saveButton_Clicked:(id)sender;
 -(IBAction)backButton_Clicked:(id)sender;
@@ -35,5 +37,7 @@
 @property(nonatomic,readwrite) int editIndex;
 /* A delegate property which will allow us to call the protocol methods. */
 @property (retain, nonatomic) id <LifelineAddViewControllerDelegate> delegate;
+@property (strong, nonatomic) LifeLine *localLifeline;
+@property (strong, nonatomic) LifeLineViewController *controller;
 
 @end

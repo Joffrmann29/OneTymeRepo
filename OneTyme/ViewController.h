@@ -7,10 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import <Social/Social.h>
 
-@interface ViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@interface ViewController : UIViewController<UITableViewDelegate,UITableViewDataSource,UIActionSheetDelegate>
 
 @property (nonatomic, strong) IBOutlet UITableView *tableView;
+@property (strong, nonatomic) NSString *attorneyString;
+@property (nonatomic,strong) UIView *alertView;
+@property (nonatomic, strong) UILabel *alertLabel;
+@property (nonatomic,readwrite) int currentCount;
+@property (nonatomic, retain) NSTimer *timerAlert;
 
 @end
 

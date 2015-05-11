@@ -24,7 +24,8 @@
         self.state = bailBonds[STATE];
         self.zipCode = bailBonds[ZIP_CODE];
         self.phone = bailBonds[PHONE_NO];
-        self.phone = bailBonds[SECONDARY_PHONE_NO];
+        self.secondaryPhone = bailBonds[SECONDARY_PHONE_NO];
+        self.email = bailBonds[EMAIL];
     }
     
     return self;

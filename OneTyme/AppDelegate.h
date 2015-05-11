@@ -6,10 +6,15 @@
 //  Copyright (c) 2015 Nutech. All rights reserved.
 //
 
+#define IS_IPHONE6 ([[UIDevice currentDevice] platformString])
+#define IS_OS_8_OR_LATER ([[[UIDevice currentDevice] systemVersion] floatValue] >= 8.0)
+
 #import <UIKit/UIKit.h>
 #import <CoreData/CoreData.h>
+#import <Parse/Parse.h>
+#import <CoreLocation/CoreLocation.h>
 
-@interface AppDelegate : UIResponder <UIApplicationDelegate>
+@interface AppDelegate : UIResponder <UIApplicationDelegate, CLLocationManagerDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
 
@@ -32,8 +37,15 @@
 @property (nonatomic,retain) NSMutableDictionary *addLifeLineDict;
 @property (nonatomic,retain) NSMutableDictionary *editLifeLineDict;
 @property (nonatomic,retain) NSString *plistPath;
+@property (nonatomic, strong) CLLocationManager *locationManager;
+@property (nonatomic) BOOL updateLocation;
+@property (nonatomic, strong) CLPlacemark *placemark;
 
 - (CALayer *)gradientBGLayerForBounds:(CGRect)bounds;
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error;
+- (NSString *) platform;
+- (NSString *) platformString;
 
 @end
 

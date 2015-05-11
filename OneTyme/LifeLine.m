@@ -24,7 +24,8 @@
         self.state = lifeline[STATE];
         self.zipCode = lifeline[ZIP_CODE];
         self.phone = lifeline[PHONE_NO];
-        self.phone = lifeline[SECONDARY_PHONE_NO];
+        self.secondaryPhone = lifeline[SECONDARY_PHONE_NO];
+        self.email = lifeline[EMAIL];
     }
     
     return self;
@@ -35,6 +36,10 @@
 {
     self = [self initWithLifeLine:nil];
     return self;
+}
+
++ (id) lifeLineWithDict:( NSDictionary *)dictionary{
+    return [[self alloc]initWithLifeLine:dictionary];
 }
 
 @end

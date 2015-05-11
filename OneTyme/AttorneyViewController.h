@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "Attorney.h"
 
 #define ATTORNEY_OBJECTS_KEY @"Attorney Objects Key"
-
 
 @interface AttorneyViewController : UIViewController
 

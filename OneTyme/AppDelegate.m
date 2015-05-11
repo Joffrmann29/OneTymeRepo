@@ -9,6 +9,8 @@
 #import "AppDelegate.h"
 #import "AttorneyNavigationController.h"
 //#import "BailNavigationController.h"
+#include <sys/types.h>
+#include <sys/sysctl.h>
 
 @interface AppDelegate ()
 
@@ -19,6 +21,15 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    [Parse setApplicationId:@"zgkYPV9rBCwn3cV3Wjcp8af7ah7Qaxh5RKOwGLJ7"
+                  clientKey:@"rI6bPxEKc5nREPn2F8kf6bPqUUmluCZosgWXiMsq"];
+    [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
+    
+    // Set default ACLs
+    PFACL *defaultACL = [PFACL ACL];
+    [defaultACL setPublicReadAccess:YES];
+    [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
+    
     NSShadow *shadow = [[NSShadow alloc] init];
     shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
     shadow.shadowOffset = CGSizeMake(0, 1);
@@ -52,9 +63,42 @@
     _AttorneyDataArray = [[NSMutableArray alloc]init];
     _BailBondsDataArray = [[NSMutableArray alloc]init];
     [self intializePlistData];
-
+    [self startUpdating];
+    NSLog(@"%@", [self platformString]);
     // Override point for customization after application launch.
     return YES;
+}
+
+- (NSString *) platform{
+    size_t size;
+    sysctlbyname("hw.machine", NULL, &size, NULL, 0);
+    char *machine = malloc(size);
+    sysctlbyname("hw.machine", machine, &size, NULL, 0);
+    NSString *platform = [NSString stringWithUTF8String:machine];
+    free(machine);
+    return platform;
+}
+- (NSString *) platformString{
+    NSString *platform = [self platform];
+    if ([platform isEqualToString:@"iPhone1,1"])    return @"iPhone 1G";
+    if ([platform isEqualToString:@"iPhone1,2"])    return @"iPhone 3G";
+    if ([platform isEqualToString:@"iPhone2,1"])    return @"iPhone 3GS";
+    if ([platform isEqualToString:@"iPhone3,1"])    return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,3"])    return @"Verizon iPhone 4";
+    if ([platform isEqualToString:@"iPhone4,1"])    return @"iPhone 4S";
+    if ([platform isEqualToString:@"iPhone5,1"])    return @"iPhone 5S";
+    if ([platform isEqualToString:@"iPhone7,1"])    return @"iPhone 6 Plus";
+    if ([platform isEqualToString:@"iPod1,1"])      return @"iPod Touch 1G";
+    if ([platform isEqualToString:@"iPod2,1"])      return @"iPod Touch 2G";
+    if ([platform isEqualToString:@"iPod3,1"])      return @"iPod Touch 3G";
+    if ([platform isEqualToString:@"iPod4,1"])      return @"iPod Touch 4G";
+    if ([platform isEqualToString:@"iPad1,1"])      return @"iPad";
+    if ([platform isEqualToString:@"iPad2,1"])      return @"iPad 2 (WiFi)";
+    if ([platform isEqualToString:@"iPad2,2"])      return @"iPad 2 (GSM)";
+    if ([platform isEqualToString:@"iPad2,3"])      return @"iPad 2 (CDMA)";
+    if ([platform isEqualToString:@"i386"])         return @"Simulator";
+    if ([platform isEqualToString:@"x86_64"])       return @"Simulator";
+    return platform;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
@@ -179,8 +223,6 @@
     {
         [_LifeLineDataArray addObject:[tempArray objectAtIndex:i]];
     }
-    
-    
 }
 
 #pragma mark -
@@ -207,6 +249,101 @@
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory , NSUserDomainMask, YES);
     NSString *documentsDir = [paths objectAtIndex:0];
     return [documentsDir stringByAppendingPathComponent:@"Data.plist"];
+}
+
+-(void)startUpdating{
+    self.locationManager = [[CLLocationManager alloc]init];
+    self.locationManager.delegate = self;
+    [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+    _locationManager.distanceFilter = kCLDistanceFilterNone;
+    [self.locationManager startUpdatingLocation];
+    
+#ifdef __IPHONE_8_0
+    if(IS_OS_8_OR_LATER){
+        [self.locationManager requestWhenInUseAuthorization];
+    }
+#endif
+    
+    //Create current time
+    NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
+    NSDate *newLocationTimestamp = [NSDate date];
+    [userDefaults setObject:newLocationTimestamp forKey:@"kLastLocationUpdateTimestamp"];
+    self.updateLocation = true;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLGeocoder *geocoder = [[CLGeocoder alloc]init];
+    CLLocation *currentLocation = (CLLocation *)[locations lastObject];
+    __block CLPlacemark *placemark = self.placemark;
+    self.placemark = placemark;
+    [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error)
+     {
+         NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
+         if (error == nil && [placemarks count] > 0)
+         {
+             placemark = [placemarks lastObject];
+             
+             // strAdd -> take bydefault value nil
+             NSString *strAdd = nil;
+             
+             if ([placemark.subThoroughfare length] != 0)
+                 strAdd = placemark.subThoroughfare;
+             
+             if ([placemark.thoroughfare length] != 0)
+             {
+                 // strAdd -> store value of current location
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark thoroughfare]];
+                 else
+                 {
+                     // strAdd -> store only this value,which is not null
+                     strAdd = placemark.thoroughfare;
+                 }
+             }
+             
+             if ([placemark.postalCode length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark postalCode]];
+                 else
+                     strAdd = placemark.postalCode;
+             }
+             
+             if ([placemark.locality length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark locality]];
+                 else
+                     strAdd = placemark.locality;
+                 self.placemark = placemark;
+             }
+             
+             if ([placemark.administrativeArea length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark administrativeArea]];
+                 else
+                     strAdd = placemark.administrativeArea;
+             }
+             
+             if ([placemark.country length] != 0)
+             {
+                 if ([strAdd length] != 0)
+                     strAdd = [NSString stringWithFormat:@"%@, %@",strAdd,[placemark country]];
+                 else
+                     strAdd = placemark.country;
+             }
+         }
+    }];
+    NSLog(@"%@", self.placemark.locality);
+    NSLog(@"%@", self.placemark.country);
+}
+
+- (void)locationManager:(CLLocationManager *)manager
+       didFailWithError:(NSError *)error
+{
+    NSLog(@"Error: %@", [error description]);
 }
 
 - (CALayer *)gradientBGLayerForBounds:(CGRect)bounds

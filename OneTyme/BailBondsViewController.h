@@ -6,11 +6,11 @@
 //  Copyright (c) 2015 Nutech. All rights reserved.
 //
 
+#define BAILBONDS_OBJECTS_KEY @"BailBonds Objects Key"
+
 #import <UIKit/UIKit.h>
 #import "AppDelegate.h"
 #import "BailBonds.h"
-
-#define BAILBONDS_OBJECTS_KEY @"BailBonds Objects Key"
 
 
 @interface BailBondsViewController : UIViewController

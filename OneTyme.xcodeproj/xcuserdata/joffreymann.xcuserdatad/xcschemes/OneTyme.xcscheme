@@ -17,7 +17,7 @@
                BlueprintIdentifier = "B452B9141A7844B700D7F684"
                BuildableName = "OneTyme.app"
                BlueprintName = "OneTyme"
-               ReferencedContainer = "container:OneTyme.xcodeproj">
+               ReferencedContainer = "container:onetyme.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -31,7 +31,7 @@
                BlueprintIdentifier = "B452B9301A7844B700D7F684"
                BuildableName = "OneTymeTests.xctest"
                BlueprintName = "OneTymeTests"
-               ReferencedContainer = "container:OneTyme.xcodeproj">
+               ReferencedContainer = "container:onetyme.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -49,7 +49,7 @@
                BlueprintIdentifier = "B452B9301A7844B700D7F684"
                BuildableName = "OneTymeTests.xctest"
                BlueprintName = "OneTymeTests"
-               ReferencedContainer = "container:OneTyme.xcodeproj">
+               ReferencedContainer = "container:onetyme.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -59,7 +59,7 @@
             BlueprintIdentifier = "B452B9141A7844B700D7F684"
             BuildableName = "OneTyme.app"
             BlueprintName = "OneTyme"
-            ReferencedContainer = "container:OneTyme.xcodeproj">
+            ReferencedContainer = "container:onetyme.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -72,13 +72,14 @@
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       allowLocationSimulation = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B452B9141A7844B700D7F684"
             BuildableName = "OneTyme.app"
             BlueprintName = "OneTyme"
-            ReferencedContainer = "container:OneTyme.xcodeproj">
+            ReferencedContainer = "container:onetyme.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -90,13 +91,14 @@
       useCustomWorkingDirectory = "NO"
       buildConfiguration = "Release"
       debugDocumentVersioning = "YES">
-      <BuildableProductRunnable>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B452B9141A7844B700D7F684"
             BuildableName = "OneTyme.app"
             BlueprintName = "OneTyme"
-            ReferencedContainer = "container:OneTyme.xcodeproj">
+            ReferencedContainer = "container:onetyme.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

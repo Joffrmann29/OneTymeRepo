@@ -24,7 +24,8 @@
         self.state = attorney[STATE];
         self.zipCode = attorney[ZIP_CODE];
         self.phone = attorney[PHONE_NO];
-        self.phone = attorney[SECONDARY_PHONE_NO];
+        self.secondaryPhone = attorney[SECONDARY_PHONE_NO];
+        self.email = attorney[EMAIL];
     }
     
     return self;

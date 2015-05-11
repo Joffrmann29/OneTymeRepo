@@ -30,5 +30,6 @@
 
 /* Custom Initializer which has a single parameter of class NSDictionary. */
 -(id)initWithLifeLine:(NSDictionary *)lifeline;
++ (id) lifeLineWithDict:( NSDictionary *)dictionary;
 
 @end

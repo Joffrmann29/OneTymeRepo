@@ -16,6 +16,8 @@
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) AppDelegate *appDelegate;
+@property (assign, nonatomic) BOOL editingMode;
+
 @end
 
 @implementation LifeLineViewController
@@ -36,6 +38,7 @@
         LifeLine *lifelineObject = [self lifelineObjectForDictionary:dictionary];
             [_appDelegate.LifeLineDataArray addObject:lifelineObject];
     }
+    _editingMode = NO;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -63,22 +66,8 @@
     static NSString *CellIdentifier = @"LifeLineTableViewCell";
     
     LifeLineTableViewCell *cell = (LifeLineTableViewCell *) [_tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-//    if (cell == nil)
-//    {
-//        
-//        NSArray *topLevelObjects = [[NSBundle mainBundle] loadNibNamed:@"LifeLineTableViewCell" owner:self options:nil];
-//        
-//        for (id currentObject in topLevelObjects)
-//        {
-//            if ([currentObject isKindOfClass:[UITableViewCell class]])
-//            {
-//                cell =  (LifeLineTableViewCell *) currentObject;
-//                break;
-//            }
-//        }
-//    }
     
-   LifeLine *lifeline = [_appDelegate.LifeLineDataArray objectAtIndex:indexPath.row];
+    LifeLine *lifeline = [_appDelegate.LifeLineDataArray objectAtIndex:indexPath.row];
     
     
     cell.nameLabel.text = lifeline.name;
@@ -90,6 +79,38 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     return 150;
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self performSegueWithIdentifier:@"toEditLifeline" sender:indexPath];
+}
+
+/* Allow the user to edit tableViewCells for deletion */
+-(BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return YES;
+}
+
+/* Method called when the users swipes and presses the delete key */
+-(void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete){
+        /* If a user deletes the row remove the task at that row from the tasksArray */
+        [_appDelegate.LifeLineDataArray removeObjectAtIndex:indexPath.row];
+    }
+    
+    NSMutableArray *newLifelineObjectsData = [[NSMutableArray alloc] init];
+    
+    for (LifeLine *lifeline in _appDelegate.LifeLineDataArray){
+        [newLifelineObjectsData addObject:[self lifelineObjectsAsAPropertyList:lifeline]];
+    }
+    
+    [[NSUserDefaults standardUserDefaults] setObject:newLifelineObjectsData forKey:LIFELINE_OBJECTS_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    
+    /* Animate the deletion of the cell */
+    [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
 }
 
 -(void)didAddLifeline:(LifeLine *)lifeline
@@ -104,7 +125,6 @@
     [lifelineObjectsAsPropertyLists addObject:[self lifelineObjectsAsAPropertyList:lifeline]];
     [[NSUserDefaults standardUserDefaults] setObject:lifelineObjectsAsPropertyLists forKey:LIFELINE_OBJECTS_KEY];
     [[NSUserDefaults standardUserDefaults] synchronize];
-    
     
     [self.navigationController popViewControllerAnimated:YES];
     [self.tableView reloadData];
@@ -126,6 +146,20 @@
     return lifelineObject;
 }
 
+-(void)saveLifeline:(LifeLine *)lifeline
+{
+    /* Create a NSMutableArray that we will NSDictionaries returned from the method taskObjectAsAPropertyList. */
+    NSMutableArray *lifelineObjectsAsPropertyLists = [[NSMutableArray alloc] init];
+    for (int x = 0; x < [_appDelegate.LifeLineDataArray count]; x ++){
+            [lifelineObjectsAsPropertyLists addObject:[self lifelineObjectsAsAPropertyList:_appDelegate.LifeLineDataArray[x]]];
+        }
+    /* Save the updated array to NSUserDefaults. */
+    [[NSUserDefaults standardUserDefaults] setObject:lifelineObjectsAsPropertyLists forKey:LIFELINE_OBJECTS_KEY];
+    [[NSUserDefaults standardUserDefaults] synchronize];
+    //[self.delegate didUpdateLifeLine];
+    [self.tableView reloadData];
+}
+
 
 #pragma mark - Navigation
 
@@ -134,15 +168,31 @@
     // Get the new view controller using [segue destinationViewController].
     // Pass the selected object to the new view controller.
     LifeLine *lifelineObject = [[LifeLine alloc]init];
-    /* Before transitioning to the CCAddTaskViewController set the delegate property to self. This way the CCAddTaskViewController will be able to call methods in the ViewController file. */
+    NSIndexPath *path = sender;
     if ([segue.destinationViewController isKindOfClass:[LifelineAddViewController class]]){
         LifelineAddViewController *addViewController = segue.destinationViewController;
         addViewController.delegate = self;
+
+        if([[segue identifier]isEqualToString:@"toEditLifeline"]){
+            lifelineObject = _appDelegate.LifeLineDataArray[path.row];
+            _editingMode = YES;
+            addViewController.isEdit = _editingMode;
+            NSLog(@"%i", _editingMode);
+            addViewController.localLifeline = lifelineObject;
+            NSLog(@"%@",lifelineObject.name);
+            
+            }
     }
 }
 
 
 - (IBAction)addLifeline:(id)sender {
-    [self performSegueWithIdentifier:@"toAddLifeline" sender:self];
+    if(_appDelegate.LifeLineDataArray.count < 5) {
+        [self performSegueWithIdentifier:@"toAddLifeline" sender:self];
+    }
+    else {
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Limit Reached" message:@"You have reached your limit of 5 lifelines. You may replace lifelines with different ones." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
+        [alertView show];
+    }
 }
 @end

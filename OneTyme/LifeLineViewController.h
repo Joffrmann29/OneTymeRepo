@@ -10,8 +10,14 @@
 
 #define LIFELINE_OBJECTS_KEY @"Lifeline Objects Key"
 
+@protocol LifeLineViewControllerDelegate <NSObject>
+
+-(void)didUpdateLifeLine;
+
+@end
+
 @interface LifeLineViewController : UIViewController
 
-
+@property (weak, nonatomic) id <LifeLineViewControllerDelegate> delegate;
 - (IBAction)addLifeline:(id)sender;
 @end
