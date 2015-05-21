@@ -37,7 +37,7 @@
     self.scrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds];
     self.scrollView.delegate = self;
     if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*1.5);
-    else if([[_appDelegate platformString]isEqualToString:@"Simulator"]) self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*2.1);
+    else if(![[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*2.1);
     
     UIImageView *oneTymeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"AttorneyBackground.png"]];
     oneTymeImage.frame = CGRectMake(0, 64, self.view.frame.size.width, 663);

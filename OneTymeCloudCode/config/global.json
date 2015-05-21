@@ -1,0 +1,14 @@
+{
+    "applications": {
+        "OneTyme": {
+            "applicationId": "zgkYPV9rBCwn3cV3Wjcp8af7ah7Qaxh5RKOwGLJ7", 
+            "masterKey": "IVD9WEl0qNN8bdrclzVrwxkvsKF32zgI9JASPFZ8"
+        }, 
+        "_default": {
+            "link": "OneTyme"
+        }
+    }, 
+    "global": {
+        "parseVersion": "1.4.2"
+    }
+}

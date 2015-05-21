@@ -1,0 +1,6 @@
+platform :ios, '7.0'
+
+pod 'Parse'
+pod 'mailgun', '~> 1.0.3'
+pod 'TwilioSDK', '~>1.2'
+pod 'SinchRTC'

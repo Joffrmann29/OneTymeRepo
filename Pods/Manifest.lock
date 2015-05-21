@@ -1,0 +1,25 @@
+PODS:
+  - AFNetworking (1.1.0)
+  - Bolts (1.1.4)
+  - mailgun (1.0.3):
+    - AFNetworking (~> 1.1.0)
+  - Parse (1.7.1):
+    - Bolts (~> 1.1)
+  - SinchRTC (3.5.0)
+  - TwilioSDK (1.2.3)
+
+DEPENDENCIES:
+  - mailgun (~> 1.0.3)
+  - Parse
+  - SinchRTC
+  - TwilioSDK (~> 1.2)
+
+SPEC CHECKSUMS:
+  AFNetworking: e6427e782b25a2289d909960df8ef41358b3277c
+  Bolts: f8e2f94edbf9fec7bb8de5ecaaa3aa6b7de6f64e
+  mailgun: 17290deea4db24050dd03ca59cd7385d508904b3
+  Parse: fa8ec29de6d82035635986c11946299fb1b38316
+  SinchRTC: f2477d7ee75770aa30d594b6d54450d95f106b4f
+  TwilioSDK: a9aeead884e926858a38b6013e583ea0443b1f1c
+
+COCOAPODS: 0.35.0
