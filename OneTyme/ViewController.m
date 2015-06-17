@@ -285,7 +285,7 @@ id <NSURLConnectionDelegate> delegate;
     
     else {
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"You must add a message, attorney, bail bondsman, and at least one lifeline to send an alert." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-                [alertView show];
+        [alertView show];
     }
 }
 

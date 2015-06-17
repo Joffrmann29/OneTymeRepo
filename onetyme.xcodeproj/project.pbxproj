@@ -871,9 +871,9 @@
 				INFOPLIST_FILE = OneTyme/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "79e35b29-6de2-408b-ae67-ba11e9edc68e";
+				PROVISIONING_PROFILE = "7c96a3bc-4e9d-43d0-bcad-70c9818ac9af";
 				VALIDATE_PRODUCT = NO;
 				VALID_ARCHS = "armv7 arm64 armv7s";
 			};
@@ -890,9 +890,9 @@
 				INFOPLIST_FILE = OneTyme/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "79e35b29-6de2-408b-ae67-ba11e9edc68e";
+				PROVISIONING_PROFILE = "7c96a3bc-4e9d-43d0-bcad-70c9818ac9af";
 				VALIDATE_PRODUCT = NO;
 				VALID_ARCHS = "armv7 arm64 armv7s";
 			};
