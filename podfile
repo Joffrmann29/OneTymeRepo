@@ -3,4 +3,9 @@ platform :ios, '7.0'
 pod 'Parse'
 pod 'mailgun', '~> 1.0.3'
 pod 'TwilioSDK', '~>1.2'
+pod 'ParseFacebookUtils'
+pod 'Facebook-iOS-SDK'
 pod 'SinchRTC'
+pod 'Rollout.io', '~> 0.10.0'
+
+

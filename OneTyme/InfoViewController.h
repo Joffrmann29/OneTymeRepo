@@ -6,9 +6,8 @@
     IBOutlet UIButton *backButton;
 }
 
-//@property (nonatomic,retain) IBOutlet UIWebView *infoWebView;
-@property (nonatomic,retain) IBOutlet UIBarButtonItem *backButton;
-@property (strong, nonatomic) UITextView *textView;
+@property (nonatomic,retain) IBOutlet UIWebView *infoWebView;
+
 
 -(IBAction)backButton_Clicked:(id)sender;
 

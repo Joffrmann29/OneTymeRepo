@@ -11,10 +11,17 @@
 //#import "BailNavigationController.h"
 #include <sys/types.h>
 #include <sys/sysctl.h>
+#import "ViewController.h"
+#import <PFFacebookUtils.h>
+#import <Rollout/Rollout.h>
+
 
 @interface AppDelegate ()
 
 @property (nonatomic, strong) AttorneyNavigationController *navController;
+
+@property (nonatomic) BOOL updating;
+
 @end
 
 @implementation AppDelegate
@@ -23,6 +30,7 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     [Parse setApplicationId:@"zgkYPV9rBCwn3cV3Wjcp8af7ah7Qaxh5RKOwGLJ7"
                   clientKey:@"rI6bPxEKc5nREPn2F8kf6bPqUUmluCZosgWXiMsq"];
+    [PFFacebookUtils initializeFacebook];
     [PFAnalytics trackAppOpenedWithLaunchOptions:launchOptions];
     
     // Set default ACLs
@@ -65,6 +73,14 @@
     [self intializePlistData];
     [self startUpdating];
     NSLog(@"%@", [self platformString]);
+    
+//#if defined( DEBUG )
+//    [Rollout setupWithDebug:YES];
+//#else
+//    [Rollout setupWithDebug:NO];
+//#endif
+
+    
     // Override point for customization after application launch.
     return YES;
 }
@@ -260,7 +276,7 @@
     
 #ifdef __IPHONE_8_0
     if(IS_OS_8_OR_LATER){
-        [self.locationManager requestWhenInUseAuthorization];
+        [self.locationManager requestAlwaysAuthorization];
     }
 #endif
     
@@ -268,7 +284,6 @@
     NSUserDefaults *userDefaults = [NSUserDefaults standardUserDefaults];
     NSDate *newLocationTimestamp = [NSDate date];
     [userDefaults setObject:newLocationTimestamp forKey:@"kLastLocationUpdateTimestamp"];
-    self.updateLocation = true;
 }
 
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
@@ -279,7 +294,7 @@
     self.placemark = placemark;
     [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error)
      {
-         NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
+         //NSLog(@"Found placemarks: %@, error: %@", placemarks, error);
          if (error == nil && [placemarks count] > 0)
          {
              placemark = [placemarks lastObject];
@@ -335,7 +350,12 @@
                      strAdd = placemark.country;
              }
          }
-    }];
+         
+         if([placemark isEqual:[NSNull null]])
+         {
+             NSLog(@"This object is null");
+         }
+     }];
     NSLog(@"%@", self.placemark.locality);
     NSLog(@"%@", self.placemark.country);
 }

@@ -4,32 +4,27 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
-		<key>Pods-AFNetworking.xcscheme</key>
+		<key>AFNetworking.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Bolts.xcscheme</key>
+		<key>Bolts.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-Parse.xcscheme</key>
+		<key>Facebook-iOS-SDK.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-SinchRTC.xcscheme</key>
+		<key>Parse.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
 		</dict>
-		<key>Pods-TwilioSDK.xcscheme</key>
-		<dict>
-			<key>isShown</key>
-			<false/>
-		</dict>
-		<key>Pods-mailgun.xcscheme</key>
+		<key>ParseFacebookUtils.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -39,40 +34,45 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>mailgun.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>452504F36F2BB3385C196E18</key>
+		<key>1045E4F79B392973C2B2E958C04106FD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>68FEFD4111287180E2F0377D</key>
+		<key>8A1E179187D54945432E758D3F42AF91</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>746A1ADFDD38D2FEB7809995</key>
+		<key>91087DA24E721CC6D76A8731DB7E65D4</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7D432B018A35281FF8591EE1</key>
+		<key>93B523E8EDA7330023FB7FA945379781</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7ED583370BF556D9095313F2</key>
+		<key>99A7095324AEC93175DB3C0D43AFC418</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A2D083A7CAD1E26DADB191E4</key>
+		<key>A3BFECD88AD0A2C6A7DFD2BD4150843D</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D4B854FE54EBADA640F04200</key>
+		<key>B0E5D6441FF574CDF250F842686765DB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

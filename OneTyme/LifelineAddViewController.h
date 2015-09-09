@@ -15,7 +15,7 @@
 @protocol LifelineAddViewControllerDelegate <NSObject>
 
 -(void)didAddLifeline:(LifeLine *)lifeline;
--(void)saveLifeline:(LifeLine *)lifeline;
+-(void)editLifeline:(LifeLine *)lifeline;
 
 @end
 
@@ -27,8 +27,6 @@
 
 -(void)fillEditDetails;
 
--(void)saveLifeLine;
--(void)editLifeLine;
 
 -(void)showPeoplePickerController;
 - (IBAction)showContacts:(id)sender;

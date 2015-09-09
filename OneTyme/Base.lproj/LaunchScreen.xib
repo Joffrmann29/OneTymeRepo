@@ -1,26 +1,57 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="6254" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="7702" systemVersion="14A389" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+            <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="OneTymeLaunchScreen.png" translatesAutoresizingMaskIntoConstraints="NO" id="Rqb-F9-Afr">
-                    <rect key="frame" x="0.0" y="0.0" width="480" height="480"/>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="OneTymeBG.png" translatesAutoresizingMaskIntoConstraints="NO" id="4iS-X1-VUg">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="circlebutton180x180.png" translatesAutoresizingMaskIntoConstraints="NO" id="TpK-bz-sDI">
+                    <rect key="frame" x="117" y="107" width="180" height="180"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="OneTymeTicker.png" translatesAutoresizingMaskIntoConstraints="NO" id="kzx-7d-i62">
+                    <rect key="frame" x="0.0" y="534" width="414" height="45"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="planfortheunexpected.png" translatesAutoresizingMaskIntoConstraints="NO" id="IBu-fG-hPI">
+                    <rect key="frame" x="0.0" y="0.0" width="414" height="63"/>
+                </imageView>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="onetymepng.png" translatesAutoresizingMaskIntoConstraints="NO" id="0NH-Sq-5d5">
+                    <rect key="frame" x="87" y="326" width="240" height="128"/>
                 </imageView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="IBu-fG-hPI" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="FYu-EN-ftM"/>
+                <constraint firstItem="kzx-7d-i62" firstAttribute="top" secondItem="0NH-Sq-5d5" secondAttribute="bottom" constant="80" id="LLb-PK-Tue"/>
+                <constraint firstItem="IBu-fG-hPI" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="OUR-Ue-JKL"/>
+                <constraint firstItem="4iS-X1-VUg" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="PHa-VP-xIu"/>
+                <constraint firstItem="0NH-Sq-5d5" firstAttribute="top" secondItem="TpK-bz-sDI" secondAttribute="bottom" constant="39" id="RQe-AB-GNW"/>
+                <constraint firstAttribute="trailing" secondItem="IBu-fG-hPI" secondAttribute="trailing" id="W3q-RW-ZPS"/>
+                <constraint firstItem="4iS-X1-VUg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="aOw-IY-9F4"/>
+                <constraint firstAttribute="bottom" secondItem="4iS-X1-VUg" secondAttribute="bottom" id="c41-v0-hr3"/>
+                <constraint firstItem="TpK-bz-sDI" firstAttribute="centerX" secondItem="4iS-X1-VUg" secondAttribute="centerX" id="jnW-Vg-1WJ"/>
+                <constraint firstItem="0NH-Sq-5d5" firstAttribute="centerX" secondItem="4iS-X1-VUg" secondAttribute="centerX" id="oF1-g2-DAV"/>
+                <constraint firstItem="kzx-7d-i62" firstAttribute="centerX" secondItem="4iS-X1-VUg" secondAttribute="centerX" id="otz-PA-tdS"/>
+                <constraint firstAttribute="trailing" secondItem="4iS-X1-VUg" secondAttribute="trailing" id="qbb-2f-bbb"/>
+            </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="548" y="455"/>
         </view>
     </objects>
     <resources>
-        <image name="OneTymeLaunchScreen.png" width="480" height="480"/>
+        <image name="OneTymeBG.png" width="414" height="663"/>
+        <image name="OneTymeTicker.png" width="413" height="45"/>
+        <image name="circlebutton180x180.png" width="180" height="180"/>
+        <image name="onetymepng.png" width="203" height="115"/>
+        <image name="planfortheunexpected.png" width="414" height="63"/>
     </resources>
 </document>

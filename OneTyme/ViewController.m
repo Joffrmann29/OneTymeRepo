@@ -18,18 +18,25 @@
 #import <Mailgun.h>
 #import <TwilioClient.h>
 
-@interface ViewController ()<MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate,NSURLConnectionDelegate, NSURLSessionDelegate>
+@interface ViewController ()<MFMailComposeViewControllerDelegate, MFMessageComposeViewControllerDelegate,NSURLConnectionDelegate, NSURLSessionDelegate, AttorneyUpdateDelegate>
 
 @property (strong, nonatomic) AppDelegate *appDelegate;
 @property (strong, nonatomic) NSArray *attorneysAsPropertyLists;
 @property (strong, nonatomic) NSArray *bailBondsAsPropertyLists;
 @property (strong, nonatomic) NSArray *lifelineAsPropertyLists;
+@property (strong, nonatomic) UIButton *pushButton;
+@property (strong, nonatomic) Attorney *savedAttorney;
+@property (strong, nonatomic) BailBonds *savedBondsmen;
+@property (strong, nonatomic) PFUser *currentUser;
+@property (strong, nonatomic) NSURL *attorneyURL;
+@property (strong, nonatomic) NSURL *bondsURL;
+@property (strong, nonatomic) IBOutlet UIImageView *oneTymeIMG;
+@property (strong, nonatomic) IBOutlet UIImageView *tickerView;
 
 @end
 
 @implementation ViewController
 NSArray *toRecipients;
-id <NSURLConnectionDelegate> delegate;
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -37,16 +44,24 @@ id <NSURLConnectionDelegate> delegate;
     _appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
     // Do any additional setup after loading the view, typically from a nib.
-    UIImageView *oneTymeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"rsz_bghomenonretina.png"]];
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) oneTymeImage.frame = CGRectMake(0, 0, self.view.frame.size.width, 1107);
-    else oneTymeImage.frame = CGRectMake(0, 0, self.view.frame.size.width, 1007);
+
+    AttorneyViewController *avc = [[AttorneyViewController alloc]init];
+    avc.delegate = self;
     
-    [self.view addSubview:oneTymeImage];
-    UIButton *alertButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) alertButton.frame = CGRectMake(127, 60, 200, 200);
-    else alertButton.frame = CGRectMake(127, 77, 200, 200);
-    [alertButton addTarget:self action:@selector(prepareToMail) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:alertButton];
+    UIImageView *oneTymeIMG = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"onetymepng.png"]];
+    
+    UIImageView *tickerView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"OneTymeTick.png"]];
+    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]){
+        //_pushButton.frame = CGRectMake(117, 140, 180, 180);
+        oneTymeIMG.frame = CGRectMake(105.5, 370, 203, 115);
+        oneTymeIMG.center=self.view.center;
+        [self.view addSubview:oneTymeIMG];
+        _oneTymeIMG.hidden = YES;
+
+        tickerView.frame = CGRectMake(0, 507, 414, 20);
+        [self.view addSubview:tickerView];
+        _tickerView.hidden = YES;
+    }
     
     NSShadow *shadow = [[NSShadow alloc] init];
     shadow.shadowColor = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.8];
@@ -71,32 +86,38 @@ id <NSURLConnectionDelegate> delegate;
     }
     [[UITabBar appearance] setTintColor:[UIColor whiteColor]];
     
-    UIButton *shareButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) {
-       shareButton.frame = CGRectMake(0, 620, self.view.frame.size.width/3, 69);
-    }
-    else {
-        shareButton.frame = CGRectMake(0, self.view.frame.size.height-83, self.view.frame.size.width/3, 39);
-    }
-    [shareButton setBackgroundImage:[UIImage imageNamed:@"Share.png"] forState:UIControlStateNormal];
-    [shareButton addTarget:self action:@selector(showAction) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:shareButton];
+    CAGradientLayer *redShareLayer = [CAGradientLayer layer];
+    redShareLayer.frame = _shareButton.bounds;
+    redShareLayer.colors = [NSArray arrayWithObjects:
+                              (id)[[UIColor darkGrayColor] CGColor],
+                              (id)[[UIColor darkTextColor] CGColor],
+                              nil];
+    _shareButton.layer.cornerRadius = 10;
+    _shareButton.clipsToBounds = YES;
+    [_shareButton.layer insertSublayer:redShareLayer atIndex:0];
+    [self.view bringSubviewToFront:_shareButton];
     
-    UIButton *addProfileButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"])
-    addProfileButton.frame = CGRectMake(138.5, 620, self.view.frame.size.width/3, 69);
-    else addProfileButton.frame = CGRectMake(106.67, self.view.frame.size.height-83, self.view.frame.size.width/3, 39);
-    [addProfileButton setBackgroundImage:[UIImage imageNamed:@"AddProfile.png"] forState:UIControlStateNormal];
-    [addProfileButton addTarget:self action:@selector(goToProfile) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:addProfileButton];
+    CAGradientLayer *redProfileLayer = [CAGradientLayer layer];
+    redProfileLayer.frame = _addProfileButton.bounds;
+    redProfileLayer.colors = [NSArray arrayWithObjects:
+                       (id)[[UIColor darkGrayColor] CGColor],
+                       (id)[[UIColor darkTextColor] CGColor],
+                       nil];
+    _addProfileButton.layer.cornerRadius = 10;
+    _addProfileButton.clipsToBounds = YES;
+    [_addProfileButton.layer insertSublayer:redProfileLayer atIndex:1];
+    [self.view bringSubviewToFront:_addProfileButton];
     
-    UIButton *infoButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"])
-    infoButton.frame = CGRectMake(277, 620, self.view.frame.size.width/3, 69);
-    else infoButton.frame = CGRectMake(213.33, self.view.frame.size.height-83, self.view.frame.size.width/3, 39);
-    [infoButton setBackgroundImage:[UIImage imageNamed:@"Information.png"] forState:UIControlStateNormal];
-    [infoButton addTarget:self action:@selector(showAppInfo) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:infoButton];
+    CAGradientLayer *redLayer = [CAGradientLayer layer];
+    redLayer.frame = _infoButton.bounds;
+    redLayer.colors = [NSArray arrayWithObjects:
+                       (id)[[UIColor darkGrayColor] CGColor],
+                       (id)[[UIColor darkTextColor] CGColor],
+                        nil];
+    _infoButton.layer.cornerRadius = 10;
+    _infoButton.clipsToBounds = YES;
+    [_infoButton.layer insertSublayer:redLayer atIndex:2];
+    [self.view bringSubviewToFront:_infoButton];
     
     self.tabBarController.tabBar.opaque = NO;
     
@@ -108,50 +129,44 @@ id <NSURLConnectionDelegate> delegate;
         tbi.image = [image imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
     }
     
-    _attorneysAsPropertyLists = [[NSUserDefaults standardUserDefaults] arrayForKey:ATTORNEY_OBJECTS_KEY];
-    _bailBondsAsPropertyLists = [[NSUserDefaults standardUserDefaults] arrayForKey:BAILBONDS_OBJECTS_KEY];
-    _lifelineAsPropertyLists = [[NSUserDefaults standardUserDefaults] arrayForKey:LIFELINE_OBJECTS_KEY];
-    
     _appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     _attorneyString = @"Joffrey";
+}
+
+-(void)viewWillAppear:(BOOL)animated
+{
+    NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    self.attorneyURL = [[urls lastObject] URLByAppendingPathComponent:@"attorney.data"];
     
+    NSData *data = [NSData dataWithContentsOfURL:self.attorneyURL];
+    
+    NSArray *bondsURLS = [[NSFileManager defaultManager]URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    self.bondsURL = [[bondsURLS lastObject]URLByAppendingPathComponent:@"bonds.data"];
+    NSData *bondData = [NSData dataWithContentsOfURL:self.bondsURL];
+    
+    _attorneysAsPropertyLists = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+    _savedAttorney = _attorneysAsPropertyLists[0];
+    NSLog(@"Saved Attorney: %@", _savedAttorney.name);
+    _bailBondsAsPropertyLists = [NSKeyedUnarchiver unarchiveObjectWithData:bondData];
+    _savedBondsmen = _bailBondsAsPropertyLists[0];
+    _lifelineAsPropertyLists = [[NSUserDefaults standardUserDefaults] arrayForKey:LIFELINE_OBJECTS_KEY];
+    _currentUser = [PFUser currentUser];
 }
 
 -(void)drawAlertTimer
 {
     if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.alertView =  [[UIView alloc]initWithFrame:CGRectMake(47, 435, 320, 130)];
-    else self.alertView =  [[UIView alloc]initWithFrame:CGRectMake(0, 355, 320, 130)];
-    UIImageView *alertImgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"AlertBG.png"]];
+    else self.alertView =  [[UIView alloc]initWithFrame:CGRectMake(0, 305, 320, 130)];
+    UIImageView *alertImgView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"AlertTicker.png"]];
     [self.alertView addSubview:alertImgView];
     self.alertLabel = [[UILabel alloc]initWithFrame:CGRectMake(150, 28, 42, 21)];
     self.alertLabel.textColor = [UIColor whiteColor];
     UIButton *cancelAlertButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    cancelAlertButton.frame = CGRectMake(131, 73, 98, 31);
+    cancelAlertButton.frame = CGRectMake(131, 88, 98, 31);
     [cancelAlertButton addTarget:self action:@selector(removeAlertView) forControlEvents:UIControlEventTouchUpInside];
     [self.alertView addSubview:cancelAlertButton];
     [self.alertView addSubview:self.alertLabel];
     [self.view addSubview:self.alertView];
-}
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    // Return the number of sections.
-    return 1;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    // Return the number of rows in the section.
-    return 4;
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
-    return cell;
 }
 
 - (void)didReceiveMemoryWarning {
@@ -170,7 +185,7 @@ id <NSURLConnectionDelegate> delegate;
     return gradientBG;
 }
 
--(void)prepareToMail
+-(IBAction)prepareToMail:(id)sender
 {
     [self drawAlertTimer];
     self.alertLabel.text = @"10";
@@ -181,9 +196,6 @@ id <NSURLConnectionDelegate> delegate;
 -(void)sendMailgunEmail
 {
     NSString *email;
-    NSMutableDictionary *tempAttorney = [[NSUserDefaults standardUserDefaults] valueForKey:@"AttorneyProfile"];
-    NSMutableDictionary *tempBonds = [[NSUserDefaults standardUserDefaults] valueForKey:@"BondsProfile"];
-    NSMutableDictionary *tempUser = [[NSUserDefaults standardUserDefaults] valueForKey:@"UserProfile"];
     NSDictionary *dictOne;
     NSDictionary *dictTwo;
     NSDictionary *dictThree;
@@ -196,29 +208,24 @@ id <NSURLConnectionDelegate> delegate;
     NSString *emailFour;
     NSString *emailFive;
     
-    NSString *locationString = [NSString stringWithFormat:@"I am currently located at %@ %@, %@, %@, %@.", _appDelegate.placemark.subThoroughfare, _appDelegate.placemark.thoroughfare, _appDelegate.placemark.locality, _appDelegate.placemark.administrativeArea, _appDelegate.placemark.postalCode];
-    NSString *emailBody = [NSString stringWithFormat:@"%@ %@", tempUser[@"message"], locationString];
+    NSString *locationString;
+    
+    if(![_appDelegate.placemark.subThoroughfare isEqualToString:@""] && ![_appDelegate.placemark.thoroughfare isEqualToString:@""] && ![_appDelegate.placemark.locality isEqualToString:@""] && ![_appDelegate.placemark.administrativeArea isEqualToString:@""] && ![_appDelegate.placemark.postalCode isEqualToString:@""])
+    {
+    locationString = [NSString stringWithFormat:@"I am currently located at %@ %@, %@, %@, %@.", _appDelegate.placemark.subThoroughfare, _appDelegate.placemark.thoroughfare, _appDelegate.placemark.locality, _appDelegate.placemark.administrativeArea, _appDelegate.placemark.postalCode];
+    }
+    
+    NSString *emailBody = [NSString stringWithFormat:@"%@ %@", _currentUser[@"Message"], locationString];
     Mailgun *mailgun;
     NSString *formattedRecipients;
     NSArray *textRecipientArray;
-    if(tempUser && tempAttorney && tempBonds && [_lifelineAsPropertyLists count] > 0) {
-//        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"You must add a message, attorney, bail bondsman, and at least one lifeline to send an alert." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//        [alertView show];
-    
-    //for(int i = 0; i < [_lifelineAsPropertyLists count]; i++){
-        
-//        if([_lifelineAsPropertyLists count] == 0)
-//        {
-//            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"You must have entered at least one lifeline." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles:nil];
-//            [alertView show];
-//        }
-        
+    if(_currentUser && _savedAttorney && _savedBondsmen && [_lifelineAsPropertyLists count] > 0) {
         if([_lifelineAsPropertyLists count] == 1)
         {
             dictOne = _lifelineAsPropertyLists[0];
             emailOne = dictOne[EMAIL];
-            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@", [tempAttorney valueForKey:@"email"], [tempBonds valueForKey:@"email"], emailOne];
-            textRecipientArray = @[[tempAttorney valueForKey:@"phone"], [tempBonds valueForKey:@"phone"], dictOne[PHONE_NO]];
+            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@", _savedAttorney.email, _savedBondsmen.email, emailOne];
+            textRecipientArray = @[_savedAttorney.phone, _savedBondsmen.phone, dictOne[PHONE_NO]];
         }
         
         else if([_lifelineAsPropertyLists count] == 2)
@@ -227,8 +234,8 @@ id <NSURLConnectionDelegate> delegate;
             emailOne = dictOne[EMAIL];
             dictTwo = _lifelineAsPropertyLists[1];
             emailTwo = dictTwo[EMAIL];
-            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@", [tempAttorney valueForKey:@"email"], [tempBonds valueForKey:@"email"], emailOne, emailTwo];
-            textRecipientArray = @[[tempAttorney valueForKey:@"phone"], [tempBonds valueForKey:@"phone"], dictOne[PHONE_NO], dictTwo[PHONE_NO]];
+            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@", _savedAttorney.email, _savedBondsmen.email, emailOne, emailTwo];
+            textRecipientArray = @[_savedAttorney.phone, _savedBondsmen.phone, dictOne[PHONE_NO], dictTwo[PHONE_NO]];
         }
         
         else if([_lifelineAsPropertyLists count] == 3)
@@ -239,8 +246,8 @@ id <NSURLConnectionDelegate> delegate;
             emailTwo = dictTwo[EMAIL];
             dictThree = _lifelineAsPropertyLists[2];
             emailThree = dictThree[EMAIL];
-            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@, %@", [tempAttorney valueForKey:@"email"], [tempBonds valueForKey:@"email"], emailOne, emailTwo, emailThree];
-            textRecipientArray = @[[tempAttorney valueForKey:@"phone"], [tempBonds valueForKey:@"phone"], dictOne[PHONE_NO], dictTwo[PHONE_NO], dictThree[PHONE_NO]];
+            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@, %@", _savedAttorney.email, _savedBondsmen.email, emailOne, emailTwo, emailThree];
+            textRecipientArray = @[_savedAttorney.phone, _savedBondsmen.phone, dictOne[PHONE_NO], dictTwo[PHONE_NO], dictThree[PHONE_NO]];
         }
         
         else if([_lifelineAsPropertyLists count] == 4)
@@ -253,8 +260,8 @@ id <NSURLConnectionDelegate> delegate;
             emailThree = dictThree[EMAIL];
             dictFour = _lifelineAsPropertyLists[3];
             emailFour = dictFour[EMAIL];
-            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@", [tempAttorney valueForKey:@"email"], [tempBonds valueForKey:@"email"], emailOne, emailTwo, emailThree, emailFour];
-            textRecipientArray = @[[tempAttorney valueForKey:@"phone"], [tempBonds valueForKey:@"phone"], dictOne[PHONE_NO], dictTwo[PHONE_NO], dictThree[PHONE_NO], dictFour[PHONE_NO]];
+            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@", _savedAttorney.email, _savedBondsmen.email, emailOne, emailTwo, emailThree, emailFour];
+            textRecipientArray = @[_savedAttorney.phone, _savedBondsmen.phone, dictOne[PHONE_NO], dictTwo[PHONE_NO], dictThree[PHONE_NO], dictFour[PHONE_NO]];
         }
         
         else if([_lifelineAsPropertyLists count] == 5)
@@ -269,12 +276,12 @@ id <NSURLConnectionDelegate> delegate;
             emailFour = dictFour[EMAIL];
             dictFive = _lifelineAsPropertyLists[4];
             emailFive = dictFive[EMAIL];
-            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@, %@", [tempAttorney valueForKey:@"email"], [tempBonds valueForKey:@"email"], emailOne, emailTwo, emailThree, emailFour, emailFive];
-            textRecipientArray = @[[tempAttorney valueForKey:@"phone"], [tempBonds valueForKey:@"phone"], dictOne[PHONE_NO], dictTwo[PHONE_NO], dictThree[PHONE_NO], dictFour[PHONE_NO], dictFive[PHONE_NO]];
+            formattedRecipients = [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@, %@", _savedAttorney.email, _savedBondsmen.email, emailOne, emailTwo, emailThree, emailFour, emailFive];
+            textRecipientArray = @[_savedAttorney.phone, _savedBondsmen.phone, dictOne[PHONE_NO], dictTwo[PHONE_NO], dictThree[PHONE_NO], dictFour[PHONE_NO], dictFive[PHONE_NO]];
         }
         mailgun = [Mailgun clientWithDomain:@"sandbox56d3af57c3ae4227a46762cf7f67d726.mailgun.org" apiKey:@"key-a84fe8abec64b12d0ca050406a95b4c1"];
         [mailgun sendMessageTo:formattedRecipients
-                          from:tempUser[@"email"]
+                          from:_currentUser[@"email"]
                        subject:@"A Message from One Tyme"
                           body:emailBody];
         [self textAlertWithArray:textRecipientArray andText:emailBody];
@@ -309,30 +316,6 @@ id <NSURLConnectionDelegate> delegate;
     
     [self.alertView removeFromSuperview];
     
-}
-
--(void)shareOneTyme
-{
-    if ([MFMailComposeViewController canSendMail])
-    {
-        MFMailComposeViewController *mailerTwo = [[MFMailComposeViewController alloc] init];
-        
-        mailerTwo.mailComposeDelegate = self;
-        
-        [mailerTwo setSubject:@"Sharing OneTyme App"];
-        [mailerTwo setMessageBody:@"Sharing OneTyme App:\nwww.onetyme.com" isHTML:NO];
-        [self presentViewController:mailerTwo animated:YES completion:nil];
-    }
-    
-    else
-    {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failure"
-                                                        message:@"Your device doesn't support the composer sheet"
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles: nil];
-        [alert show];
-    }
 }
 
 -(void)failureAlert
@@ -400,16 +383,6 @@ id <NSURLConnectionDelegate> delegate;
     return lifelineObject;
 }
 
--(void)goToProfile
-{
-    [self performSegueWithIdentifier:@"toProfile" sender:nil];
-}
-
--(void)showAppInfo
-{
-    [self performSegueWithIdentifier:@"toInformation" sender:nil];
-}
-
 -(void)postToFacebook
 {
     if([SLComposeViewController isAvailableForServiceType:SLServiceTypeFacebook])
@@ -459,6 +432,30 @@ id <NSURLConnectionDelegate> delegate;
     
 }
 
+-(void)shareByMail
+{
+    if ([MFMailComposeViewController canSendMail])
+    {
+        MFMailComposeViewController *mailerTwo = [[MFMailComposeViewController alloc] init];
+        
+        mailerTwo.mailComposeDelegate = self;
+        
+        [mailerTwo setSubject:@"Sharing OneTyme App"];
+        [mailerTwo setMessageBody:@"Sharing OneTyme App:\nwww.onetyme.us" isHTML:NO];
+        [self presentViewController:mailerTwo animated:YES completion:nil];
+    }
+    
+    else
+    {
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failure"
+                                                        message:@"Your device doesn't support the composer sheet"
+                                                       delegate:nil
+                                              cancelButtonTitle:@"OK"
+                                              otherButtonTitles: nil];
+        [alert show];
+    }
+}
+
 -(void)showAction
 {
     NSString *actionSheetTitle = @"Menu Options"; //Action Sheet Title
@@ -481,7 +478,7 @@ id <NSURLConnectionDelegate> delegate;
 {
     if(buttonIndex == 0)
     {
-        [self shareOneTyme];
+        [self shareByMail];
     }
     
     else if(buttonIndex == 1)
@@ -524,7 +521,7 @@ id <NSURLConnectionDelegate> delegate;
     MFMessageComposeViewController *messageController = [[MFMessageComposeViewController alloc] init];
     messageController.messageComposeDelegate = self;
     [messageController setRecipients:nil];
-    [messageController setBody:@"Sharing OneTyme App:\nwww.onetyme.com"];
+    [messageController setBody:@"Sharing OneTyme App:\nwww.onetyme.us"];
     
     // Present message view controller on screen
     [self presentViewController:messageController animated:YES completion:^{
@@ -556,6 +553,30 @@ id <NSURLConnectionDelegate> delegate;
     }
     
     [self dismissViewControllerAnimated:YES completion:nil];
+}
+
+-(CAGradientLayer *)makeBackgroundLayerForView:(UIView *)view
+{
+    CAGradientLayer *viewLayer = [CAGradientLayer layer];
+    viewLayer.frame = view.bounds;
+    viewLayer.colors = [NSArray arrayWithObjects:
+                        (id)[[UIColor darkGrayColor] CGColor],
+                        (id)[[UIColor darkGrayColor] CGColor],
+                        nil];
+    
+    return viewLayer;
+}
+
+- (IBAction)shareOneTyme:(id)sender {
+    [self showAction];
+}
+
+- (IBAction)addProfile:(id)sender {
+    [self performSegueWithIdentifier:@"toProfile" sender:self];
+}
+
+- (IBAction)showInfoPage:(id)sender {
+    [self performSegueWithIdentifier:@"toInformation" sender:self];
 }
 
 @end

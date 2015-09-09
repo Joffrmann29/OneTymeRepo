@@ -31,6 +31,35 @@
     return self;
 }
 
+-(id)initWithCoder:(NSCoder *)aDecoder
+{
+    if(self)
+    {
+        self.name = [aDecoder decodeObjectForKey:NAME];
+        self.address = [aDecoder decodeObjectForKey:ADDRESS];
+        self.city = [aDecoder decodeObjectForKey:CITY];
+        self.state = [aDecoder decodeObjectForKey:STATE];
+        self.zipCode = [aDecoder decodeObjectForKey:ZIP_CODE];
+        self.phone = [aDecoder decodeObjectForKey:PHONE_NO];
+        self.secondaryPhone = [aDecoder decodeObjectForKey:SECONDARY_PHONE_NO];
+        self.email = [aDecoder decodeObjectForKey:EMAIL];
+    }
+    
+    return self;
+}
+
+-(void)encodeWithCoder:(NSCoder *)aCoder
+{
+    [aCoder encodeObject:self.name forKey:NAME];
+    [aCoder encodeObject:self.address forKey:ADDRESS];
+    [aCoder encodeObject:self.city forKey:CITY];
+    [aCoder encodeObject:self.state forKey:STATE];
+    [aCoder encodeObject:self.zipCode forKey:ZIP_CODE];
+    [aCoder encodeObject:self.phone forKey:PHONE_NO];
+    [aCoder encodeObject:self.secondaryPhone forKey:SECONDARY_PHONE_NO];
+    [aCoder encodeObject:self.email forKey:EMAIL];
+}
+
 /* Default initializer calls the new designated initializer initWithData */
 -(id)init
 {

@@ -8,6 +8,7 @@
 
 #import "BailBondsTableViewController.h"
 #import "BailBondsDetailViewController.h"
+#import "BailBondsBioViewController.h"
 
 @implementation BailBondsTableViewController
 
@@ -28,6 +29,10 @@ UIAlertView *alertView;
     // Do any additional setup after loading the view.
     [self retrieveBonds];
     self.navigationItem.title =[NSString stringWithFormat:@"Bail Bondsmen By %@", _searchString];
+    
+    self.tableView.backgroundColor = [UIColor darkGrayColor];
+    
+    [self loadingOverlay];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -61,7 +66,7 @@ UIAlertView *alertView;
 -(void)loadingOverlay
 {
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    hud.labelText = @"Loading Bondsmen";
 }
 
 -(void) retrieveBondsBySearch{
@@ -116,19 +121,51 @@ UIAlertView *alertView;
     PFObject *bondsmen = _paidBondsmen[indexPath.row];
     
     PFFile *file = bondsmen[@"Logo"];
-    NSData *imageData = [file getData];
-    UIImage *image = [UIImage imageWithData:imageData];
-    UIImage *finalImage = [self resizeImage:image];
+    
+    UIImage *finalImage;
+    
+    if(file != nil)
+    {
+        NSData *imageData = [file getData];
+        UIImage *image = [UIImage imageWithData:imageData];
+        finalImage = [self resizeImage:image];
+    }
+    
+    else
+    {
+        UIImage *attorneyImg = [UIImage imageNamed:@"BailBondsSelected.png"];
+        finalImage = [self resizeImage:attorneyImg];
+    }
+    
+    cell.tintColor = [UIColor whiteColor];
     cell.imageView.image = finalImage;
     cell.textLabel.text = bondsmen[@"Name"];
+    cell.textLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", bondsmen[@"Address"], bondsmen[@"City"], bondsmen[@"State"], bondsmen[@"Zip"]];
+    cell.detailTextLabel.textColor = [UIColor whiteColor];
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"toBondsDetail" sender:indexPath];
+    PFObject *bondsmen = _paidBondsmen[indexPath.row];
+    NSString *url = bondsmen[@"url"];
+    
+    if(![url isEqualToString:@""])
+    {
+        [self performSegueWithIdentifier:@"toBondsDetail" sender:indexPath];
+    }
+    
+    else
+    {
+        [self performSegueWithIdentifier:@"toBondsBio" sender:indexPath];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(UIImage *)resizeImage:(UIImage *)image
@@ -182,12 +219,19 @@ UIAlertView *alertView;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSIndexPath *indexPath = sender;
+    PFObject *bondsmen = self.paidBondsmen[indexPath.row];
+    
     if([segue.destinationViewController isKindOfClass:[BailBondsDetailViewController class]])
     {
         BailBondsDetailViewController *detailController = segue.destinationViewController;
-        NSIndexPath *indexPath = sender;
-        PFObject *bondsmen = self.paidBondsmen[indexPath.row];
         detailController.bondsmen = bondsmen;
+    }
+    
+    else
+    {
+        BailBondsBioViewController *bioController = (BailBondsBioViewController *)segue.destinationViewController;
+        bioController.bondsmen = bondsmen;
     }
 }
 

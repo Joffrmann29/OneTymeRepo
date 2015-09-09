@@ -47,5 +47,7 @@
 - (NSString *) platform;
 - (NSString *) platformString;
 
+-(void)startUpdating;
+
 @end
 

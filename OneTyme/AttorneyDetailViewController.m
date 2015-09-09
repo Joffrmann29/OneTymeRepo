@@ -8,8 +8,16 @@
 
 #import "AttorneyDetailViewController.h"
 #import "BackgroundLayer.h"
+#import "MBProgressHUD.h"
+#import "Attorney.h"
 
-@interface AttorneyDetailViewController ()
+@interface AttorneyDetailViewController ()<UIWebViewDelegate>
+
+@property (weak, nonatomic) IBOutlet UIWebView *webView;
+
+@property (strong, nonatomic) MBProgressHUD *hud;
+
+@property (strong, nonatomic) NSURL *attorneyURL;
 
 @end
 
@@ -18,43 +26,81 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.nameLabel.text = [NSString stringWithFormat:@"Name: %@", _attorney[@"Name"]];
-    self.addressLabel.text = [NSString stringWithFormat:@"Address: %@", _attorney[@"Address"]];
-    self.cityLabel.text = [NSString stringWithFormat:@"City: %@", _attorney[@"City"]];
-    self.stateLabel.text = [NSString stringWithFormat:@"State: %@", _attorney[@"State"]];
-    self.zipLabel.text = [NSString stringWithFormat:@"Zip :%@", _attorney[@"Zip"]];
-    self.phoneLabel.text = [NSString stringWithFormat:@"Phone: %@" ,_attorney[@"Phone"]];
-    self.emailLabel.text = [NSString stringWithFormat:@"E-mail: %@", _attorney[@"Email"]];
-    PFFile *picFile = _attorney[@"ProfilePic"];
-    NSData *imgData = [picFile getData];
-    UIImage *profileImg = [UIImage imageWithData:imgData];
-    UIImage *resizedProfileImg = [self resizeImage:profileImg];
-    self.attorneyImgView.image = resizedProfileImg;
-    self.navigationItem.title = _attorney[@"Name"];
-    
-    CAGradientLayer *bgLayer = [BackgroundLayer blueGradient];
-    bgLayer.frame = self.view.bounds;
-    [self.view.layer insertSublayer:bgLayer atIndex:0];
+    _webView.delegate = self;
+    [self loadWebsite];
 }
 
--(UIImage *)resizeImage:(UIImage *)image
+-(void)loadingOverlay
 {
-    CGRect rect = CGRectMake(0, 0, 100, 100);
-    UIGraphicsBeginImageContext(rect.size);
-    [image drawInRect:rect];
-    UIImage *transformedImage = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
+    _hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+    _hud.labelText = @"Loading Attorney Details";
+}
+
+-(void)loadWebsite
+{
+    NSString *lawyerPath = _attorney[@"url"];
+    //append the country name to the wiki path
     
-    NSData *imgData = UIImagePNGRepresentation(transformedImage);
-    UIImage *finalImage = [UIImage imageWithData:imgData];
-    
-    return finalImage;
+    //create a URL object
+    NSURL *url = [NSURL URLWithString:lawyerPath];
+    //create a url request
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    //load the request in webview
+    [_webView loadRequest:request];
+}
+
+-(void)webViewDidStartLoad:(UIWebView *)webView
+{
+    [self loadingOverlay];
+}
+
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    [_hud hide:YES];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+- (IBAction)addAsYourAttorney:(id)sender
+{
+    [self writeAttorneyToFilesystem:[self attorneyWithValues]];
+    
+    NSString *messageString = [NSString stringWithFormat:@"%@ has been saved as your personal attorney.", _attorney[@"Name"]];
+    
+    UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Success" message:messageString  delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+    [alertView show];
+}
+
+-(void)writeAttorneyToFilesystem:(Attorney *)attorney
+{
+    NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    self.attorneyURL = [[urls lastObject] URLByAppendingPathComponent:@"attorney.data"];
+    
+    NSData *data = [NSData dataWithContentsOfURL:self.attorneyURL];
+    NSMutableArray *mAttorneys = [[NSMutableArray alloc]initWithArray:[NSKeyedUnarchiver unarchiveObjectWithData:data]];
+    [mAttorneys insertObject:attorney atIndex:0];
+    NSData *fileData = [NSKeyedArchiver archivedDataWithRootObject:mAttorneys];
+    [fileData writeToURL:self.attorneyURL atomically:YES];
+}
+
+-(Attorney *)attorneyWithValues
+{
+    Attorney *attorneyToSave = [[Attorney alloc]init];
+    attorneyToSave.name = _attorney[@"Name"];
+    attorneyToSave.address = _attorney[@"Address"];
+    attorneyToSave.city = _attorney[@"City"];
+    attorneyToSave.state = _attorney[@"State"];
+    attorneyToSave.zipCode = _attorney[@"Zip"];
+    attorneyToSave.phone = _attorney[@"Phone"];
+    attorneyToSave.secondaryPhone = _attorney[@"SecondaryPhone"];
+    attorneyToSave.email = _attorney[@"Email"];
+    
+    return attorneyToSave;
+}
+
 
 /*
 #pragma mark - Navigation

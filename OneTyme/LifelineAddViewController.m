@@ -14,15 +14,15 @@
 
 @property (nonatomic, strong) AppDelegate *appDelegate;
 @property (nonatomic, strong) ABPeoplePickerNavigationController *addressBookController;
-@property (nonatomic, strong) UITextField *nameField;
-@property (nonatomic, strong) UITextField *addressField;
-@property (nonatomic, strong) UITextField *cityField;
-@property (nonatomic, strong) UITextField *stateField;
-@property (nonatomic, strong) UITextField *zipField;
-@property (nonatomic, strong) UITextField *phoneField;
-@property (nonatomic, strong) UITextField *secondaryPhoneField;
-@property (nonatomic, strong) UITextField *emailField;
-@property (nonatomic, strong) UIScrollView *scrollView;
+@property (nonatomic, strong) IBOutlet UITextField *nameField;
+@property (nonatomic, strong) IBOutlet UITextField *addressField;
+@property (nonatomic, strong) IBOutlet UITextField *cityField;
+@property (nonatomic, strong) IBOutlet UITextField *stateField;
+@property (nonatomic, strong) IBOutlet UITextField *zipField;
+@property (nonatomic, strong) IBOutlet UITextField *phoneField;
+@property (nonatomic, strong) IBOutlet UITextField *emailField;
+@property (nonatomic, strong) IBOutlet UIScrollView *scrollView;
+@property (strong, nonatomic) IBOutlet UIButton *saveButton;
 
 @end
 
@@ -32,177 +32,98 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    _appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    _appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+//    
+//    self.scrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds];
+//    self.scrollView.delegate = self;
+//    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*1.3);
+//    else if(![[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*2.1);
+//    
+//    UIImageView *oneTymeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"AttorneyBackground.png"]];
+//    oneTymeImage.frame = CGRectMake(0, 64, self.view.frame.size.width, 663);
+//    [self.view addSubview:oneTymeImage];
+    CAGradientLayer * gradientBG = [CAGradientLayer layer];
+    gradientBG.frame = _saveButton.bounds;
+    gradientBG.colors = [NSArray arrayWithObjects:
+                         (id)[[UIColor blackColor] CGColor],
+                         (id)[[UIColor darkGrayColor] CGColor],
+                         nil];
+    self.saveButton.layer.cornerRadius = 10;
+    self.saveButton.clipsToBounds = YES;
+    [self.saveButton.layer insertSublayer:gradientBG atIndex:0];
+    _nameField.delegate = self;
+    _addressField.delegate = self;
+    _cityField.delegate = self;
+    _stateField.delegate = self;
+    _zipField.delegate = self;
+    _phoneField.delegate = self;
+    _emailField.delegate = self;
+    [self loadFields];
     
-    self.scrollView = [[UIScrollView alloc]initWithFrame:self.view.bounds];
-    self.scrollView.delegate = self;
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*1.5);
-    else if(![[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.scrollView.contentSize = CGSizeMake(self.view.frame.size.width, self.view.frame.size.height*2.1);
+    UIToolbar *phoneToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+    phoneToolbar.barStyle = UIBarStyleBlackTranslucent;
+    phoneToolbar.items = @[[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                           [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithPhonePad)]];
+    UIImage *toolbarImage = [self imageForBounds:phoneToolbar.bounds];
     
-    UIImageView *oneTymeImage = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"AttorneyBackground.png"]];
-    oneTymeImage.frame = CGRectMake(0, 64, self.view.frame.size.width, 663);
-    [self.view addSubview:oneTymeImage];
+    [phoneToolbar setBackgroundImage:toolbarImage forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [phoneToolbar setTintColor:[UIColor whiteColor]];
+    [phoneToolbar sizeToFit];
+    _phoneField.inputAccessoryView = phoneToolbar;
     
-    UIButton *saveButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [saveButton setTitle:@"Save Lifeline" forState:UIControlStateNormal];
-    [saveButton addTarget:self
-                                action:@selector(saveLifeLine)
-                      forControlEvents:UIControlEventTouchUpInside];
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) saveButton.frame = CGRectMake(120.5, 928, 173, 29);
-    else saveButton.frame = CGRectMake(60, 896, 200, 29);
-    CALayer *saveLayer = saveButton.layer;
-    saveLayer = [self gradientBGLayerForBounds:saveButton.bounds];
-    saveLayer.cornerRadius = 10;
-    [self.scrollView addSubview:saveButton];
     
-    UIGraphicsBeginImageContext(saveLayer.bounds.size);
-    [saveLayer renderInContext:UIGraphicsGetCurrentContext()];
-    UIImage *saveImage = UIGraphicsGetImageFromCurrentImageContext();
+    UIToolbar *zipToolbar = [[UIToolbar alloc]initWithFrame:CGRectMake(0, 0, self.view.frame.size.width, 50)];
+    zipToolbar.barStyle = UIBarStyleBlackTranslucent;
+    zipToolbar.items = @[[[UIBarButtonItem alloc]initWithBarButtonSystemItem:UIBarButtonSystemItemFlexibleSpace target:nil action:nil],
+                         [[UIBarButtonItem alloc]initWithTitle:@"Done" style:UIBarButtonItemStyleDone target:self action:@selector(doneWithZipPad)]];
+    [zipToolbar setTintColor:[UIColor whiteColor]];
+    [zipToolbar setBackgroundImage:toolbarImage forToolbarPosition:UIBarPositionAny barMetrics:UIBarMetricsDefault];
+    [zipToolbar sizeToFit];
+    _zipField.inputAccessoryView = zipToolbar;
+}
+
+-(void)doneWithPhonePad
+{
+    [_phoneField resignFirstResponder];
+}
+
+-(void)doneWithZipPad
+{
+    [_zipField resignFirstResponder];
+}
+
+-(UIImage *)imageForBounds:(CGRect)bounds
+{
+    AppDelegate *delegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    CALayer * bgGradientLayer = [delegate gradientBGLayerForBounds:bounds];
+    UIGraphicsBeginImageContext(bgGradientLayer.bounds.size);
+    [bgGradientLayer renderInContext:UIGraphicsGetCurrentContext()];
+    UIImage *toolbarImage = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
     
-    
-    if (saveImage != nil)
-    {
-        [saveButton setBackgroundImage:saveImage forState:UIControlStateNormal];
-    }
-    else
-    {
-        NSLog(@"Failded to create gradient bg image, user will see standard tint color gradient.");
-    }
+    return toolbarImage;
+}
 
-    UIColor *textfieldPlaceholderColor = [UIColor lightGrayColor];
-
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.nameField = [[UITextField alloc]initWithFrame:CGRectMake(57, 128, 300, 30)];
-    else self.nameField = [[UITextField alloc]initWithFrame:CGRectMake(50, 96, 220, 30)];
-    self.nameField.layer.cornerRadius = 10;
-    self.nameField.backgroundColor = [UIColor blackColor];
-    self.nameField.textColor = textfieldPlaceholderColor;
-    self.nameField.placeholder = @"Name";
-    
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.addressField = [[UITextField alloc]initWithFrame:CGRectMake(57, 228, 300, 30)];
-    else self.addressField = [[UITextField alloc]initWithFrame:CGRectMake(50, 196, 220, 30)];
-    self.addressField.layer.cornerRadius = 10;
-    self.addressField.backgroundColor = [UIColor blackColor];
-    self.addressField.textColor = textfieldPlaceholderColor;
-    self.addressField.placeholder = @"Address";
-    
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.cityField = [[UITextField alloc]initWithFrame:CGRectMake(57, 328, 300, 30)];
-    else self.cityField = [[UITextField alloc]initWithFrame:CGRectMake(50, 296, 220, 30)];
-    self.cityField.layer.cornerRadius = 10;
-    self.cityField.backgroundColor = [UIColor blackColor];
-    self.cityField.textColor = textfieldPlaceholderColor;
-    self.cityField.placeholder = @"City";
-    
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.stateField = [[UITextField alloc]initWithFrame:CGRectMake(57, 428, 300, 30)];
-    else self.stateField = [[UITextField alloc]initWithFrame:CGRectMake(50, 396, 220, 30)];
-    self.stateField.layer.cornerRadius = 10;
-    self.stateField.backgroundColor = [UIColor blackColor];
-    self.stateField.textColor = textfieldPlaceholderColor;
-    self.stateField.placeholder = @"State";
-    
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.zipField = [[UITextField alloc]initWithFrame:CGRectMake(57, 528, 300, 30)];
-    else self.zipField = [[UITextField alloc]initWithFrame:CGRectMake(50, 496, 220, 30)];
-    self.zipField.layer.cornerRadius = 10;
-    self.zipField.backgroundColor = [UIColor blackColor];
-    self.zipField.textColor = textfieldPlaceholderColor;
-    self.zipField.placeholder = @"Zip Code";
-    
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.phoneField = [[UITextField alloc]initWithFrame:CGRectMake(57, 628, 300, 30)];
-    else self.phoneField = [[UITextField alloc]initWithFrame:CGRectMake(50, 596, 220, 30)];
-    self.phoneField.layer.cornerRadius = 10;
-    self.phoneField.backgroundColor = [UIColor blackColor];
-    self.phoneField.textColor = textfieldPlaceholderColor;
-    self.phoneField.keyboardType = UIKeyboardTypeNamePhonePad;
-    self.phoneField.placeholder = @"Phone";
-    
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.secondaryPhoneField = [[UITextField alloc]initWithFrame:CGRectMake(57, 728, 300, 30)];
-    else self.secondaryPhoneField = [[UITextField alloc]initWithFrame:CGRectMake(50, 696, 220, 30)];
-    self.secondaryPhoneField.layer.cornerRadius = 10;
-    self.secondaryPhoneField.backgroundColor = [UIColor blackColor];
-    self.secondaryPhoneField.textColor = textfieldPlaceholderColor;
-    self.secondaryPhoneField.keyboardType = UIKeyboardTypeNamePhonePad;
-    self.secondaryPhoneField.placeholder = @"Secondary Phone";
-    
-    if([[_appDelegate platformString]isEqualToString:@"iPhone 6 Plus"]) self.emailField = [[UITextField alloc]initWithFrame:CGRectMake(57, 828, 300, 30)];
-    else self.emailField = [[UITextField alloc]initWithFrame:CGRectMake(50, 796, 220, 30)];
-    self.emailField.layer.cornerRadius = 10;
-    self.emailField.backgroundColor = [UIColor blackColor];
-    self.emailField.textColor = textfieldPlaceholderColor;
-    self.emailField.keyboardType = UIKeyboardTypeEmailAddress;
-    self.emailField.placeholder = @"E-mail";
-
-    [self.nameField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    [self.addressField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    [self.cityField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    [self.stateField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    [self.zipField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    [self.phoneField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    [self.secondaryPhoneField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    [self.emailField setValue:textfieldPlaceholderColor forKeyPath:@"_placeholderLabel.textColor"];
-    
-    self.nameField.textAlignment = NSTextAlignmentCenter;
-    self.addressField.textAlignment = NSTextAlignmentCenter;
-    self.cityField.textAlignment = NSTextAlignmentCenter;
-    self.stateField.textAlignment = NSTextAlignmentCenter;
-    self.zipField.textAlignment = NSTextAlignmentCenter;
-    self.phoneField.textAlignment = NSTextAlignmentCenter;
-    self.secondaryPhoneField.textAlignment = NSTextAlignmentCenter;
-    self.emailField.textAlignment = NSTextAlignmentCenter;
-    
-    self.nameField.delegate = self;
-    self.addressField.delegate = self;
-    self.cityField.delegate = self;
-    self.stateField.delegate = self;
-    self.zipField.delegate = self;
-    self.phoneField.delegate = self;
-    self.secondaryPhoneField.delegate = self;
-    self.emailField.delegate = self;
-    
-    [self.scrollView addSubview:self.nameField];
-    [self.scrollView addSubview:self.addressField];
-    [self.scrollView addSubview:self.cityField];
-    [self.scrollView addSubview:self.stateField];
-    [self.scrollView addSubview:self.zipField];
-    [self.scrollView addSubview:self.phoneField];
-    [self.scrollView addSubview:self.secondaryPhoneField];
-    [self.scrollView addSubview:self.emailField];
-    [self.view addSubview:self.scrollView];
-    
-//    [self.view addSubview:self.nameField];
-//    [self.view addSubview:self.addressField];
-//    [self.view addSubview:self.cityField];
-//    [self.view addSubview:self.stateField];
-//    [self.view addSubview:self.zipField];
-//    [self.view addSubview:self.phoneField];
-//    [self.view addSubview:self.secondaryPhoneField];
-//    [self.view addSubview:self.emailField];
-    
-    if(_isEdit == YES)
+-(void)loadFields
+{
+    if(_isEdit)
     {
-        self.nameField.text = _localLifeline.name;
-        self.addressField.text = _localLifeline.address;
-        self.cityField.text = _localLifeline.city;
-        self.stateField.text = _localLifeline.state;
-        self.zipField.text = _localLifeline.zipCode;
-        self.phoneField.text = _localLifeline.phone;
-        self.secondaryPhoneField.text = _localLifeline.secondaryPhone;
-        self.emailField.text = _localLifeline.email;
+        _nameField.text = _localLifeline.name;
+        _addressField.text = _localLifeline.address;
+        _cityField.text = _localLifeline.city;
+        _stateField.text = _localLifeline.state;
+        _zipField.text = _localLifeline.zipCode;
+        _phoneField.text = _localLifeline.phone;
+        _emailField.text = _localLifeline.email;
     }
 }
 
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
-    [self setViewMovedUp:NO];
+    
     return YES;
-}
-
--(void)textFieldDidBeginEditing:(UITextField *)textField
-{
-    if  (self.view.frame.origin.y >= 0)
-    {
-        [self setViewMovedUp:YES];
-    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -210,71 +131,29 @@
     // Dispose of any resources that can be recreated.
 }
 
--(void)keyboardWillShow {
-    // Animate the current view out of the way
-    if (self.view.frame.origin.y >= 0)
-    {
-        [self setViewMovedUp:YES];
-    }
-    else if (self.view.frame.origin.y < 0)
-    {
-        [self setViewMovedUp:NO];
-    }
-}
-
--(void)keyboardWillHide {
-    if (self.view.frame.origin.y >= 0)
-    {
-        [self setViewMovedUp:YES];
-    }
-    else if (self.view.frame.origin.y < 0)
-    {
-        [self setViewMovedUp:NO];
-    }
-}
-
--(void)textFieldDidChange
+-(IBAction)saveLifeLine:(id)sender
 {
-    //move the main view, so that the keyboard does not hide it.
-    if  (self.view.frame.origin.y >= 0)
+    if(![_nameField.text isEqualToString:@""] && ![_addressField.text isEqualToString:@""] && ![_cityField.text isEqualToString:@""] && ![_stateField.text isEqualToString:@""] && ![_zipField.text isEqualToString:@""] && ![_phoneField.text isEqualToString:@""]  && ![_emailField.text isEqualToString:@""] && _isEdit == NO)
     {
-        [self setViewMovedUp:YES];
+        [self.delegate didAddLifeline:[self returnNewLifeline]];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Life line saved succesfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        alert.tag = 99;
+        [alert show];
+        [self.navigationController popViewControllerAnimated:YES];
     }
-}
-
-//method to move the view up/down whenever the keyboard is shown/dismissed
--(void)setViewMovedUp:(BOOL)movedUp
-{
-    [UIView beginAnimations:nil context:NULL];
-    [UIView setAnimationDuration:0.3]; // if you want to slide up the view
+    else if(![_nameField.text isEqualToString:@""] && ![_addressField.text isEqualToString:@""] && ![_cityField.text isEqualToString:@""] && ![_stateField.text isEqualToString:@""] && ![_zipField.text isEqualToString:@""] && ![_phoneField.text isEqualToString:@""] && ![_emailField.text isEqualToString:@""] && _isEdit == YES)
+    {
+        [self didUpdateLifeLine];
+        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Life line edited succesfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        alert.tag = 100;
+        [alert show];
+        [self.navigationController popViewControllerAnimated:YES];
+    }
     
-    CGRect rect = self.view.frame;
-    if (movedUp)
-    {
-        // 1. move the view's origin up so that the text field that will be hidden come above the keyboard
-        // 2. increase the size of the view so that the area behind the keyboard is covered up.
-        rect.origin.y -= kOFFSET_FOR_KEYBOARD;
-        rect.size.height += kOFFSET_FOR_KEYBOARD;
+    else{
+        UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"Error" message:@"You must complete all the required fields." delegate:nil cancelButtonTitle:@"Ok" otherButtonTitles: nil];
+        [alertView show];
     }
-    else
-    {
-        // revert back to the normal state.
-        rect.origin.y += kOFFSET_FOR_KEYBOARD;
-        rect.size.height -= kOFFSET_FOR_KEYBOARD;
-    }
-    self.view.frame = rect;
-    
-    [UIView commitAnimations];
-}
-
-
--(void)saveLifeLine
-{
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Success" message:@"Life line save succesfully" delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
-    alert.tag = 99;
-    [alert show];
-    if(_isEdit == YES) [self didUpdateLifeLine];
-    else [self.delegate didAddLifeline:[self returnNewLifeline]];
 }
 
 -(void)didUpdateLifeLine
@@ -286,9 +165,8 @@
     self.localLifeline.state = self.stateField.text;
     self.localLifeline.zipCode = self.zipField.text;
     self.localLifeline.phone = self.phoneField.text;
-    self.localLifeline.secondaryPhone = self.secondaryPhoneField.text;
     self.localLifeline.email = self.emailField.text;
-    [self.delegate saveLifeline:self.localLifeline];
+    [self.delegate editLifeline:self.localLifeline];
 }
 
 -(LifeLine *)returnNewLifeline
@@ -300,31 +178,9 @@
     lifelineObject.state = self.stateField.text;
     lifelineObject.zipCode = self.zipField.text;
     lifelineObject.phone = self.phoneField.text;
-    lifelineObject.secondaryPhone = self.secondaryPhoneField.text;
     lifelineObject.email = self.emailField.text;
     
     return lifelineObject;
-}
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
-
-- (CALayer *)gradientBGLayerForBounds:(CGRect)bounds
-{
-    CAGradientLayer * gradientBG = [CAGradientLayer layer];
-    gradientBG.frame = bounds;
-    gradientBG.colors = [NSArray arrayWithObjects:
-                         (id)[[UIColor blackColor] CGColor],
-                         (id)[[UIColor darkGrayColor] CGColor],
-                         nil];
-    return gradientBG;
 }
 
 - (IBAction)showContacts:(id)sender {
@@ -342,11 +198,13 @@
     // Display only a person's phone, email, and birthdate
     NSArray *displayedItems = [NSArray arrayWithObjects:[NSNumber numberWithInt:kABPersonPhoneProperty],
                                [NSNumber numberWithInt:kABPersonEmailProperty],
-                               [NSNumber numberWithInt:kABPersonBirthdayProperty], nil];
+                               [NSNumber numberWithInt:kABPersonBirthdayProperty],
+                               [NSNumber numberWithInt:kABPersonAddressProperty], nil];
     
     picker.displayedProperties = displayedItems;
     // Show the picker
     [self presentViewController:picker animated:YES completion:nil];
+    if(_isEdit)
     self.nameField.text = nil;
     self.addressField.text = nil;
     self.cityField.text = nil;
@@ -365,26 +223,35 @@
 // Displays the information of a selected person
 - (BOOL)peoplePickerNavigationController:(ABPeoplePickerNavigationController *)peoplePicker shouldContinueAfterSelectingPerson:(ABRecordRef)person
 {
+    NSMutableDictionary *contactDict = [[NSMutableDictionary alloc]initWithObjects:@[@"", @"", @"", @"", @"", @"", @"", @""]
+    forKeys:@[@"firstName", @"lastName", @"address", @"city", @"state", @"zip", @"phone", @"e-mail"]];
     NSString *firstname = (__bridge  NSString *)ABRecordCopyValue(person, kABPersonFirstNameProperty);
     NSString *lastname= (__bridge  NSString *)ABRecordCopyValue(person, kABPersonLastNameProperty);
-    
     
     self.nameField.text = [NSString stringWithFormat:@"%@ %@",firstname,lastname];
     
     ABMultiValueRef phone = ABRecordCopyValue(person, kABPersonPhoneProperty);
-    //self.phoneTextField.text = (NSString *)ABMultiValueCopyValueAtIndex(phone, 0);
+    self.phoneField.text = (__bridge NSString *)ABMultiValueCopyValueAtIndex(phone, 0);
     
     ABMultiValueRef aMulti = ABRecordCopyValue(person, kABPersonAddressProperty);
-    if (aMulti != nil) {
-        int aMultiCount = ABMultiValueGetCount(aMulti);
-        for (int i = 0; i < aMultiCount; ++i) {
-            NSDictionary *abDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(aMulti, i);
-            
-            self.addressField.text = [abDict objectForKey:(NSString *)kABPersonAddressStreetKey];
-            self.cityField.text = [abDict objectForKey:(NSString *)kABPersonAddressCityKey];
-            self.stateField.text = [abDict objectForKey:(NSString *)kABPersonAddressStateKey];
-            self.zipField.text = [abDict objectForKey:(NSString *)kABPersonAddressZIPKey];
-        }
+    if (ABMultiValueGetCount(aMulti) > 0) {
+            NSDictionary *abDict = (__bridge NSDictionary *)ABMultiValueCopyValueAtIndex(aMulti, 0);
+        NSString  *address = [abDict objectForKey:(NSString *)kABPersonAddressStreetKey];
+        [contactDict setObject:address forKey:@"address"];
+        NSString *zip = [abDict objectForKey:(NSString *)kABPersonAddressZIPKey];
+        [contactDict setObject:zip forKey:@"zip"];
+        NSString *city = [abDict objectForKey:(NSString *)kABPersonAddressCityKey];
+        [contactDict setObject:city forKey:@"city"];
+        NSString *state = [abDict objectForKey:(NSString *)kABPersonAddressStateKey];
+        [contactDict setObject:state forKey:@"state"];
+        [contactDict setObject:(__bridge NSString *)ABMultiValueCopyValueAtIndex(phone, 0) forKey:@"phone"];
+        [contactDict setObject:(__bridge NSString *)ABMultiValueCopyValueAtIndex(phone, 0) forKey:@"secondaryPhone"];
+        
+        NSLog(@"%@", contactDict);
+        _addressField.text = contactDict[@"address"];
+        _cityField.text = contactDict[@"city"];
+        _stateField.text = contactDict[@"state"];
+        _zipField.text = contactDict[@"zip"];
         CFRelease(aMulti);
     }
     
@@ -406,10 +273,10 @@
     return NO;
 }
 
-
 // Dismisses the people picker and shows the application when users tap Cancel.
 - (void)peoplePickerNavigationControllerDidCancel:(ABPeoplePickerNavigationController *)peoplePicker;
 {
+    [self loadFields];
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 @end

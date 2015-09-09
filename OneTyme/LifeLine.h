@@ -27,6 +27,7 @@
 @property (nonatomic, strong) NSString *email;
 @property (nonatomic, strong) NSString *phone;
 @property (nonatomic, strong) NSString *secondaryPhone;
+@property (nonatomic, strong) NSData *lifelineImageData;
 
 /* Custom Initializer which has a single parameter of class NSDictionary. */
 -(id)initWithLifeLine:(NSDictionary *)lifeline;

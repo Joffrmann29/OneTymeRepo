@@ -8,6 +8,7 @@
 
 #import "AttorneyTableViewController.h"
 #import "AttorneyDetailViewController.h"
+#import "AttorneyBioViewController.h"
 
 @implementation AttorneyTableViewController
 MBProgressHUD *hud;
@@ -29,6 +30,10 @@ UITextField *textField;
     self.navigationItem.title = [NSString stringWithFormat:@"Attorneys by %@", _searchString];
     NSLog(@"%@", _preQuery);
     [self retrieveAttorneys];
+    
+    self.tableView.backgroundColor = [UIColor darkGrayColor];
+    
+    [self loadingOverlay];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -68,7 +73,7 @@ UITextField *textField;
 -(void)loadingOverlay
 {
     hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-    hud.labelText = @"Loading";
+    hud.labelText = @"Loading Attorneys";
 }
 
 -(void) retrieveAttorneysBySearch{
@@ -123,19 +128,51 @@ UITextField *textField;
     PFObject *attorney = _paidAttorneys[indexPath.row];
     
     PFFile *file = attorney[@"ProfilePic"];
-    NSData *imageData = [file getData];
-    UIImage *image = [UIImage imageWithData:imageData];
-    UIImage *finalImage = [self resizeImage:image];
+    
+    UIImage *finalImage;
+    
+    if(file != nil)
+    {
+        NSData *imageData = [file getData];
+        UIImage *image = [UIImage imageWithData:imageData];
+        finalImage = [self resizeImage:image];
+        cell.imageView.image = finalImage;
+    }
+    
+    else
+    {
+        finalImage = [self resizeImage:[UIImage imageNamed:@"AttorneySelected.png"]];
+    }
+    
+    cell.tintColor = [UIColor whiteColor];
     cell.imageView.image = finalImage;
     cell.textLabel.text = attorney[@"Name"];
+    cell.textLabel.textColor = [UIColor whiteColor];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"%@, %@, %@, %@", attorney[@"Address"], attorney[@"City"], attorney[@"State"], attorney[@"Zip"]];
+    cell.detailTextLabel.textColor = [UIColor whiteColor];
     
     return cell;
 }
 
 -(void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
 {
-    [self performSegueWithIdentifier:@"toAttorneyDetail" sender:indexPath];
+    PFObject *attorney = _paidAttorneys[indexPath.row];
+    NSString *url = attorney[@"url"];
+    
+    if(url != nil)
+    {
+        [self performSegueWithIdentifier:@"toAttorneyDetail" sender:indexPath];
+    }
+    
+    else
+    {
+        [self performSegueWithIdentifier:@"toAttorneyBio" sender:indexPath];
+    }
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 -(UIImage *)resizeImage:(UIImage *)image
@@ -189,12 +226,18 @@ UITextField *textField;
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
 {
+    NSIndexPath *indexPath = sender;
+    PFObject *attorney = self.paidAttorneys[indexPath.row];
     if([segue.destinationViewController isKindOfClass:[AttorneyDetailViewController class]])
     {
-        AttorneyDetailViewController *detailController = segue.destinationViewController;
-        NSIndexPath *indexPath = sender;
-        PFObject *attorney = self.paidAttorneys[indexPath.row];
+        AttorneyDetailViewController *detailController = (AttorneyDetailViewController *)segue.destinationViewController;
         detailController.attorney = attorney;
+    }
+    
+    else
+    {
+        AttorneyBioViewController *bioController = (AttorneyBioViewController *)segue.destinationViewController;
+        bioController.attorney = attorney;
     }
 }
 

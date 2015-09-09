@@ -39,6 +39,8 @@
             [_appDelegate.LifeLineDataArray addObject:lifelineObject];
     }
     _editingMode = NO;
+    
+    self.tableView.backgroundColor = [UIColor grayColor];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -73,6 +75,9 @@
     cell.nameLabel.text = lifeline.name;
     cell.addressLabel.text = lifeline.address;
     cell.zipLabel.text = [NSString stringWithFormat:@"%@, %@ %@", lifeline.city, lifeline.state, lifeline.zipCode];
+    UIView *bgColorView = [[UIView alloc] init];
+    bgColorView.backgroundColor = [UIColor blackColor];
+    [cell setSelectedBackgroundView:bgColorView];
     
     return cell;
 }
@@ -84,6 +89,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self performSegueWithIdentifier:@"toEditLifeline" sender:indexPath];
+    [tableView deselectRowAtIndexPath:indexPath animated:YES];
 }
 
 /* Allow the user to edit tableViewCells for deletion */
@@ -135,7 +141,7 @@
 /* Convert and return an NSDictionary of the taskObject */
 -(NSDictionary *)lifelineObjectsAsAPropertyList:(LifeLine *)lifelineObject
 {
-    NSDictionary *dictionary = @{NAME : lifelineObject.name, ADDRESS : lifelineObject.address, CITY : lifelineObject.city, STATE : lifelineObject.state, ZIP_CODE : lifelineObject.zipCode, PHONE_NO : lifelineObject.phone, SECONDARY_PHONE_NO : lifelineObject.secondaryPhone, EMAIL : lifelineObject.email };
+    NSDictionary *dictionary = @{NAME : lifelineObject.name, ADDRESS : lifelineObject.address, CITY : lifelineObject.city, STATE : lifelineObject.state, ZIP_CODE : lifelineObject.zipCode, PHONE_NO : lifelineObject.phone, EMAIL : lifelineObject.email };
     return dictionary;
 }
 
@@ -146,7 +152,7 @@
     return lifelineObject;
 }
 
--(void)saveLifeline:(LifeLine *)lifeline
+-(void)editLifeline:(LifeLine *)lifeline
 {
     /* Create a NSMutableArray that we will NSDictionaries returned from the method taskObjectAsAPropertyList. */
     NSMutableArray *lifelineObjectsAsPropertyLists = [[NSMutableArray alloc] init];
@@ -184,7 +190,6 @@
             }
     }
 }
-
 
 - (IBAction)addLifeline:(id)sender {
     if(_appDelegate.LifeLineDataArray.count < 5) {

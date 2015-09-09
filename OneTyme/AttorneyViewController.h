@@ -9,8 +9,16 @@
 #import <UIKit/UIKit.h>
 #import "Attorney.h"
 
+@protocol AttorneyUpdateDelegate <NSObject>
+
+-(void)didUpdate;
+
+@end
+
 #define ATTORNEY_OBJECTS_KEY @"Attorney Objects Key"
 
 @interface AttorneyViewController : UIViewController
+
+@property (weak, nonatomic) id<AttorneyUpdateDelegate> delegate;
 
 @end
