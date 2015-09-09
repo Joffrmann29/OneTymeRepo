@@ -74,11 +74,11 @@
     [self startUpdating];
     NSLog(@"%@", [self platformString]);
     
-//#if defined( DEBUG )
-//    [Rollout setupWithDebug:YES];
-//#else
-//    [Rollout setupWithDebug:NO];
-//#endif
+#if defined( DEBUG )
+    [Rollout setupWithDebug:YES];
+#else
+    [Rollout setupWithDebug:NO];
+#endif
 
     
     // Override point for customization after application launch.
